@@ -13,6 +13,6 @@ public class StopClickedEvent implements EventHandler<MouseEvent> {
 
     @Override
     public void handle(MouseEvent event) {
-        application.getButtons().setConvertingButtonsState();
+        application.getButtons().setDownloadedButtonsState();
     }
 }
