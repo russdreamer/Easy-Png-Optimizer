@@ -1,6 +1,8 @@
 package com.toolittlespot.elements;
 
 
+import static com.toolittlespot.Constants.BYTE;
+
 public class RowElement {
     private CellElement nameCell;
     private CellElement beforeCell;
@@ -57,5 +59,14 @@ public class RowElement {
             case 3: return reduceCell;
             default: return null;
         }
+    }
+
+    public void changeRowConvertValues(long afterValue, long reduceValue){
+        getAfterCell().setText(afterValue + BYTE);
+        getReduceCell().setText(reduceValue + "%");
+    }
+
+    public void changeRowColor(String style){
+        getReduceCell().getBackground().setStyle(style);
     }
 }

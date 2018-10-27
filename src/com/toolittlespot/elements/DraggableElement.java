@@ -30,6 +30,11 @@ public class DraggableElement {
         draggableField.setVisible(false);
     }
 
+    public void enableDraggable(){
+        draggableField.setDisable(false);
+        draggableField.setVisible(true);
+    }
+
     public Label getDragLabel() {
         return dragLabel;
     }

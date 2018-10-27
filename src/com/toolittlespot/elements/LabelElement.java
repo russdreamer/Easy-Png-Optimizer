@@ -6,6 +6,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.toolittlespot.Constants.BYTE;
 import static com.toolittlespot.Constants.EMPTY_FIELD;
 
 public class LabelElement {
@@ -20,7 +21,7 @@ public class LabelElement {
 
     public static List<Label> createLabels(File file){
         String name = file.getName();
-        String before = file.length() + " bytes";
+        String before = file.length() + BYTE;
 
         return createLabels(name, before, EMPTY_FIELD, EMPTY_FIELD);
     }

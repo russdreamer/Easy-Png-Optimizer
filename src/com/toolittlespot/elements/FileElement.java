@@ -29,7 +29,7 @@ public class FileElement {
 
         for (File file: files) {
             if (isImage(file) && isPng(file)){
-                FileElement fileElement = new FileElement(file, fileRowsNum + 1);
+                FileElement fileElement = new FileElement(file, fileRowsNum);
                 if (application.getFileMap().putIfDontExists(fileElement)){
                     fileRowsNum++;
                     List<Label> labels = LabelElement.createLabels(file);

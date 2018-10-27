@@ -2,15 +2,15 @@ package com.toolittlespot.convert;
 
 import com.toolittlespot.elements.ApplicationArea;
 import com.toolittlespot.elements.FileElement;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class ConvertFileManager extends Thread{
+    final static Logger LOGGER = Logger.getLogger(ConvertFileManager.class);
     private ApplicationArea application;
     private Collection<FileElement> files;
 
@@ -21,31 +21,24 @@ public class ConvertFileManager extends Thread{
 
     @Override
     public void run() {
-        convert();
+        try {
+            convert();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         System.out.println("finished");
     }
 
-    private void convert() {
-        ExecutorService executor = Executors.newWorkStealingPool();
+    private void convert() throws InterruptedException {
+        ExecutorService executor = application.getExecutorService();
         List<ConvertFile> threads = new ArrayList<>();
 
         for (FileElement file: files) {
-            ConvertFile thread = new ConvertFile(file);
+            ConvertFile thread = new ConvertFile(application, file);
             threads.add(thread);
-            executor.execute(thread);
         }
 
-        /* wait till all threads are completed */
-        for (ConvertFile item: threads) {
-            try {
-                item.get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-        }
-
+        executor.invokeAll(threads);
         application.getButtons().setConvertedButtonsState();
     }
 }

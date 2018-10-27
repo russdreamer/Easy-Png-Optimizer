@@ -5,9 +5,16 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import static com.toolittlespot.Constants.*;
 
 public class ApplicationArea {
+    /* UI */
     private Scene scene;
     private StackPane topPanel;
     private StackPane bottomPanel;
@@ -15,10 +22,16 @@ public class ApplicationArea {
     private GridElement grid;
     private DraggableElement draggableBox;
     private ButtonGroupElement buttons;
+
+    /* engine side */
     private FileMap fileMap;
+    private List<Process> processList;
+    private ExecutorService executorService;
 
     {
         fileMap = new FileMap();
+        processList = Collections.synchronizedList(new ArrayList<>());
+        executorService = Executors.newWorkStealingPool();
     }
 
 
@@ -86,5 +99,13 @@ public class ApplicationArea {
 
     public void setFileMap(FileMap fileMap) {
         this.fileMap = fileMap;
+    }
+
+    public List<Process> getProcessList() {
+        return processList;
+    }
+
+    public ExecutorService getExecutorService() {
+        return executorService;
     }
 }

@@ -17,6 +17,7 @@ public class ConvertClickedEvent implements EventHandler<MouseEvent> {
 
     @Override
     public void handle(MouseEvent event) {
+        application.getDraggableBox().disableDraggable();
         application.getButtons().setConvertingButtonsState();
         Collection<FileElement> files = application.getFileMap().getFiles();
         ConvertFileManager manager = new ConvertFileManager(application, files);

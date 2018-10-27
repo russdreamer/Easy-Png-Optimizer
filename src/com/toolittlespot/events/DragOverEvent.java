@@ -22,7 +22,7 @@ public class DragOverEvent implements EventHandler<DragEvent> {
         VBox dragTarget = application.getDraggableBox().getDraggableField();
         if (event.getGestureSource() != dragTarget
                 && event.getDragboard().hasFiles()) {
-            event.acceptTransferModes(TransferMode.LINK);
+            event.acceptTransferModes(TransferMode.COPY);
             application.getDraggableBox().getDragLabel().setText(DRAGGED);
             application.getDraggableBox().getDraggableField().setStyle(DRAGGED_WINDOW_STYLE);
         }

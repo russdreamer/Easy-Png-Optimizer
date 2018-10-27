@@ -21,11 +21,12 @@ public class CellElement {
         this.background = background;
     }
 
-    public Label getText() {
-        return text;
+    public String getText() {
+        return text.getText();
     }
 
-    public void setText(Label text) {
-        this.text = text;
+    public boolean setText(String newText) {
+        this.text.setText(newText);
+        return true;
     }
 }
