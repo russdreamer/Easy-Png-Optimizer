@@ -40,5 +40,6 @@ public class ConvertFileManager extends Thread{
 
         executor.invokeAll(threads);
         application.getButtons().setConvertedButtonsState();
+        application.getDraggableBox().enableDraggable();
     }
 }
