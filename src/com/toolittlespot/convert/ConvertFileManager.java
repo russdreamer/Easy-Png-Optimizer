@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 public class ConvertFileManager extends Thread{
-    final static Logger LOGGER = Logger.getLogger(ConvertFileManager.class);
     private ApplicationArea application;
     private Collection<FileElement> files;
 
@@ -26,7 +25,6 @@ public class ConvertFileManager extends Thread{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("finished");
     }
 
     private void convert() throws InterruptedException {
@@ -39,6 +37,7 @@ public class ConvertFileManager extends Thread{
         }
 
         executor.invokeAll(threads);
+
         application.getButtons().setConvertedButtonsState();
         application.getDraggableBox().enableDraggable();
     }

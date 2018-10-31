@@ -15,22 +15,22 @@ import java.util.concurrent.Callable;
 import static com.toolittlespot.Constants.*;
 
 public class ConvertFile implements Callable<Boolean> {
-    final static Logger LOGGER = Logger.getLogger(ConvertFile.class);
+    private final static Logger LOGGER = Logger.getLogger(ConvertFile.class);
     private FileElement fileElement;
     private ApplicationArea application;
 
-    public ConvertFile(ApplicationArea application, FileElement fileElement) {
+    ConvertFile(ApplicationArea application, FileElement fileElement) {
         this.application = application;
         this.fileElement = fileElement;
     }
 
-    private void processFile(FileElement fileElement) throws InterruptedException {
+    private boolean processFile(FileElement fileElement) {
         String filePath = fileElement.getFile().getAbsolutePath();
         String fileNameToSave = fileElement.getFileNameToSave();
-        convertFile(filePath, DEFAULT_FILE_PATH + fileNameToSave);
+        return convertFile(filePath, DEFAULT_FILE_PATH + fileNameToSave);
     }
 
-    private void convertFile(String pathFrom, String pathTo) throws InterruptedException {
+    private boolean convertFile(String pathFrom, String pathTo) {
         String[] processCommand = {COMPRESSOR_PATH, pathFrom, pathTo};
         Process process;
         BufferedReader reader;
@@ -42,10 +42,12 @@ public class ConvertFile implements Callable<Boolean> {
             reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             LOGGER.trace(reader.readLine());
             reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        updateRow();
+        catch (IOException | InterruptedException e) {
+            LOGGER.warn("converting file is interrupted.");
+            return false;
+        }
+        return true;
     }
 
     private long getNewSize(FileElement fileElement) {
@@ -54,15 +56,11 @@ public class ConvertFile implements Callable<Boolean> {
 
     @Override
     public Boolean call() {
-        try {
-            processFile(fileElement);
-        } catch (InterruptedException e) {
-            LOGGER.warn("converting file is interrupted.");
-            return false;
+        if (processFile(fileElement)){
+            updateRow();
+            return true;
         }
-
-        updateRow();
-        return true;
+        return false;
     }
 
     private void updateRow() {

@@ -31,7 +31,6 @@ public class ApplicationArea {
     {
         fileMap = new FileMap();
         processList = Collections.synchronizedList(new ArrayList<>());
-        executorService = Executors.newWorkStealingPool();
     }
 
 
@@ -76,7 +75,7 @@ public class ApplicationArea {
         return bottomPanel;
     }
 
-    public void setBottomPanel(StackPane bottomPanel) {
+    private void setBottomPanel(StackPane bottomPanel) {
         this.bottomPanel = bottomPanel;
     }
 
@@ -106,6 +105,7 @@ public class ApplicationArea {
     }
 
     public ExecutorService getExecutorService() {
+        executorService = Executors.newWorkStealingPool();
         return executorService;
     }
 }
