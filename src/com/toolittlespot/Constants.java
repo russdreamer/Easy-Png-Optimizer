@@ -21,4 +21,8 @@ public class Constants {
     /* units */
     public static final String BYTE = " bytes";
 
+    /* alert dialog */
+    public static final String ALERT_TITLE = "Information";
+    public static final String ALERT_HEADER = "Save successful";
+    public static final String ALERT_CONTEXT = "Click OK to close this window";
 }

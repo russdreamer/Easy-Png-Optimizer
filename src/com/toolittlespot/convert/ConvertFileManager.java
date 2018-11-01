@@ -1,5 +1,6 @@
 package com.toolittlespot.convert;
 
+import com.toolittlespot.AppUtils;
 import com.toolittlespot.elements.ApplicationArea;
 import com.toolittlespot.elements.FileElement;
 
@@ -38,20 +39,7 @@ public class ConvertFileManager extends Thread{
         }
 
         executor.invokeAll(threads);
-        setButtonState();
+        AppUtils.setButtonState(application);
         application.getDraggableBox().enableDraggable();
-    }
-
-    private void setButtonState() {
-        int done = application.getConvertedFiles().size();
-        int fileSize = application.getUnconvertedFiles().size();
-
-        if (done == 0){
-            application.getButtons().setFileUploadedButtonsState();
-        }
-        else if (done < fileSize){
-            application.getButtons().setPartlyConvertedButtonsState();
-        }
-        else application.getButtons().setAllConvertedButtonsState();
     }
 }

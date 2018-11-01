@@ -1,5 +1,6 @@
 package com.toolittlespot.events;
 
+import com.toolittlespot.AppUtils;
 import com.toolittlespot.elements.ApplicationArea;
 import com.toolittlespot.elements.FileElement;
 import javafx.event.EventHandler;
@@ -23,7 +24,7 @@ public class DragDroppedEvent implements EventHandler<DragEvent> {
         boolean success = false;
         if (db.hasFiles()) {
             List<File> files = event.getDragboard().getFiles();
-            if (FileElement.downloadFiles(files, application)){
+            if (AppUtils.downloadFiles(files, application)){
                 application.getButtons().setFileUploadedButtonsState();
                 success = true;
             }

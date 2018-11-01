@@ -35,7 +35,7 @@ public class FileMap{
     }
 
     private String createNewName(FileElement file) {
-        String extension = "." + FileElement.getExtension(file.getFileNameToSave());
+        String extension = "." + AppUtils.getExtension(file.getFileNameToSave());
         String copy = "_copy";
         int i = 1;
         String newFileName;

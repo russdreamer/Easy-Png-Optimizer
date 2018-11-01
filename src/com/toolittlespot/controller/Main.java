@@ -22,9 +22,9 @@ public class Main extends Application {
     }
 
     private void createApplication(Stage primaryStage) {
+
         ApplicationArea application = new ApplicationArea();
         application.setTopPanel(new StackPane());
-
 
         GridElement gridElement = new GridElement(4);
         gridElement.createGrid();
