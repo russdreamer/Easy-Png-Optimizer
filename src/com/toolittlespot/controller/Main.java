@@ -14,8 +14,6 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    public static Runtime runtime;
-
     @Override
     public void start(Stage primaryStage) {
         createApplication(primaryStage);

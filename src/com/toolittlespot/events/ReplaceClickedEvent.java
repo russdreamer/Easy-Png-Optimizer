@@ -25,6 +25,7 @@ public class ReplaceClickedEvent implements EventHandler<MouseEvent> {
     @Override
     public void handle(MouseEvent event) {
         application.getButtons().getButtons().setDisable(true);
+        application.getDraggableBox().disableDraggable();
         List<FileElement> files = application.getConvertedFiles();
 
         for (FileElement file: files) {
@@ -41,9 +42,12 @@ public class ReplaceClickedEvent implements EventHandler<MouseEvent> {
         alert.setTitle(ALERT_TITLE);
         alert.setHeaderText(ALERT_HEADER);
         alert.setContentText(ALERT_CONTEXT);
-        alert.showAndWait();
+
+        /* better to use showAndWait but due to jdk bug we use show() https://bugs.openjdk.java.net/browse/JDK-8211137 */
+        alert.show();
 
         application.getButtons().getButtons().setDisable(false);
+        application.getDraggableBox().enableDraggable();
         AppUtils.setButtonState(application);
     }
 }
