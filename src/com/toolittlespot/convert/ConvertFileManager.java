@@ -2,7 +2,6 @@ package com.toolittlespot.convert;
 
 import com.toolittlespot.elements.ApplicationArea;
 import com.toolittlespot.elements.FileElement;
-import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,13 +31,27 @@ public class ConvertFileManager extends Thread{
         List<ConvertFile> threads = new ArrayList<>();
 
         for (FileElement file: files) {
-            ConvertFile thread = new ConvertFile(application, file);
-            threads.add(thread);
+            if (file != null){
+                ConvertFile thread = new ConvertFile(application, file);
+                threads.add(thread);
+            }
         }
 
         executor.invokeAll(threads);
-
-        application.getButtons().setConvertedButtonsState();
+        setButtonState();
         application.getDraggableBox().enableDraggable();
+    }
+
+    private void setButtonState() {
+        int done = application.getConvertedFiles().size();
+        int fileSize = application.getUnconvertedFiles().size();
+
+        if (done == 0){
+            application.getButtons().setFileUploadedButtonsState();
+        }
+        else if (done < fileSize){
+            application.getButtons().setPartlyConvertedButtonsState();
+        }
+        else application.getButtons().setAllConvertedButtonsState();
     }
 }

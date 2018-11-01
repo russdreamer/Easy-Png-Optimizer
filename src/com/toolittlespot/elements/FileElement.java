@@ -31,6 +31,7 @@ public class FileElement {
             if (isImage(file) && isPng(file)){
                 FileElement fileElement = new FileElement(file, fileRowsNum);
                 if (application.getFileMap().putIfDontExists(fileElement)){
+                    application.getUnconvertedFiles().add(fileElement.rowNumber, fileElement);
                     fileRowsNum++;
                     List<Label> labels = LabelElement.createLabels(file);
                     RowElement fileRow = application.getGrid().createRowFromLabels(labels, fileRowsNum, FILE_ROW_STYLE);

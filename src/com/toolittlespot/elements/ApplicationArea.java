@@ -25,12 +25,16 @@ public class ApplicationArea {
 
     /* engine side */
     private FileMap fileMap;
+    private List<FileElement> convertedFiles;
+    private List<FileElement> unconvertedFiles;
     private List<Process> processList;
     private ExecutorService executorService;
 
     {
         fileMap = new FileMap();
         processList = Collections.synchronizedList(new ArrayList<>());
+        convertedFiles = Collections.synchronizedList(new ArrayList<>());
+        unconvertedFiles = Collections.synchronizedList(new ArrayList<>());
     }
 
 
@@ -105,7 +109,17 @@ public class ApplicationArea {
     }
 
     public ExecutorService getExecutorService() {
-        executorService = Executors.newWorkStealingPool();
-        return executorService;
+        if (executorService == null || executorService.isTerminated()) {
+            return executorService = Executors.newWorkStealingPool();
+        }
+        else return executorService;
+    }
+
+    public List<FileElement> getConvertedFiles() {
+        return convertedFiles;
+    }
+
+    public List<FileElement> getUnconvertedFiles() {
+        return unconvertedFiles;
     }
 }

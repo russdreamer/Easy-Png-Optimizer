@@ -19,7 +19,7 @@ public class ConvertClickedEvent implements EventHandler<MouseEvent> {
     public void handle(MouseEvent event) {
         application.getDraggableBox().disableDraggable();
         application.getButtons().setConvertingButtonsState();
-        Collection<FileElement> files = application.getFileMap().getFiles();
+        Collection<FileElement> files = application.getUnconvertedFiles();
         ConvertFileManager manager = new ConvertFileManager(application, files);
         manager.start();
     }

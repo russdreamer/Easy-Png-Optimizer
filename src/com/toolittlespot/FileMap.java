@@ -34,15 +34,11 @@ public class FileMap{
         }
     }
 
-    public Collection<FileElement> getFiles(){
-        return this.files.values();
-    }
-
     private String createNewName(FileElement file) {
         String extension = "." + FileElement.getExtension(file.getFileNameToSave());
         String copy = "_copy";
         int i = 1;
-        String newFileName = null;
+        String newFileName;
         do {
             newFileName = file.getFileNameToSave() + copy + i + extension;
             i++;

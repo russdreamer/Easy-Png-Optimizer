@@ -58,9 +58,15 @@ public class ConvertFile implements Callable<Boolean> {
     public Boolean call() {
         if (processFile(fileElement)){
             updateRow();
+            setAsConverted();
             return true;
         }
         return false;
+    }
+
+    private void setAsConverted() {
+        application.getUnconvertedFiles().set(fileElement.getRowNumber(), null);
+        application.getConvertedFiles().add(fileElement);
     }
 
     private void updateRow() {

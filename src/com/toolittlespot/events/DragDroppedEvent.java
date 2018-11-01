@@ -24,7 +24,7 @@ public class DragDroppedEvent implements EventHandler<DragEvent> {
         if (db.hasFiles()) {
             List<File> files = event.getDragboard().getFiles();
             if (FileElement.downloadFiles(files, application)){
-                application.getButtons().setDownloadedButtonsState();
+                application.getButtons().setFileUploadedButtonsState();
                 success = true;
             }
         }

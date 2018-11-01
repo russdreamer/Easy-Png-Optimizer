@@ -20,6 +20,8 @@ public class RemoveAllClickedEvent implements EventHandler<MouseEvent> {
         /* clear rows from our application */
         application.getGrid().clearGrid();
         application.getFileMap().clear();
+        application.getConvertedFiles().clear();
+        application.getUnconvertedFiles().clear();
 
         /* clear rows from FX's list */
         ObservableList<Node> gridCells = application.getGrid().getGrid().getChildren();

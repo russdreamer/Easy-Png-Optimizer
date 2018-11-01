@@ -25,29 +25,32 @@ public class ButtonGroupElement {
         setDefaultButtonsState();
     }
 
-    private void setButtonState(boolean group, boolean subGroup1, boolean subGroup2, boolean subGroup3) {
-        buttons.setDisable(group);
-        convert.setVisible(subGroup1);
-        removeAll.setVisible(subGroup1);
-        stop.setVisible(subGroup2);
-        replace.setVisible(subGroup3);
-        saveAs.setVisible(subGroup3);
+    private void setButtonState(boolean convert, boolean removeAll, boolean saveButtons, boolean stop) {
+        this.convert.setVisible(convert);
+        this.removeAll.setVisible(removeAll);
+        this.stop.setVisible(stop);
+        this.replace.setVisible(saveButtons);
+        this.saveAs.setVisible(saveButtons);
     }
 
     public void setDefaultButtonsState() {
-        setButtonState(true, false, false, false);
+        setButtonState(false, false, false, false);
     }
 
-    public void setDownloadedButtonsState() {
-        setButtonState(false, true, false, false);
+    public void setFileUploadedButtonsState() {
+        setButtonState(true, true, false, false);
     }
 
     public void setConvertingButtonsState() {
-        setButtonState(false, false, true, false);
+        setButtonState(false, false, false, true);
     }
 
-    public void setConvertedButtonsState() {
-        setButtonState(false, false, false, true);
+    public void setAllConvertedButtonsState() {
+        setButtonState(false, true, true, false);
+    }
+
+    public void setPartlyConvertedButtonsState() {
+        setButtonState(true, true, true, false);
     }
 
     private void setAlignment() {
@@ -55,9 +58,9 @@ public class ButtonGroupElement {
         StackPane.setAlignment(removeAll,Pos.BOTTOM_RIGHT);
         StackPane.setMargin(convert, new Insets(0, 90,0 , 0) );
         StackPane.setAlignment(stop, Pos.BOTTOM_RIGHT );
-        StackPane.setAlignment(saveAs,Pos.BOTTOM_RIGHT);
-        StackPane.setAlignment(replace,Pos.BOTTOM_RIGHT);
-        StackPane.setMargin(saveAs, new Insets(0, 100,0 , 0) );
+        StackPane.setAlignment(saveAs,Pos.BOTTOM_LEFT);
+        StackPane.setAlignment(replace,Pos.BOTTOM_LEFT);
+        StackPane.setMargin(saveAs, new Insets(0, 0,0 , 100) );
     }
 
     public StackPane getButtons() {
