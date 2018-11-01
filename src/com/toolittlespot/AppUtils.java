@@ -4,6 +4,7 @@ import com.toolittlespot.elements.ApplicationArea;
 import com.toolittlespot.elements.FileElement;
 import com.toolittlespot.elements.LabelElement;
 import com.toolittlespot.elements.RowElement;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 
 import javax.imageio.ImageIO;
@@ -13,7 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.toolittlespot.Constants.FILE_ROW_STYLE;
+import static com.toolittlespot.Constants.*;
 
 public class AppUtils {
 
@@ -53,6 +54,20 @@ public class AppUtils {
         else application.getButtons().setAllConvertedButtonsState();
     }
 
+    public static String getExtension(String name) {
+        String[] arr = name.split("\\.");
+        return arr[arr.length - 1];
+    }
+
+    public static void showSavedAllert(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(ALERT_TITLE);
+        alert.setHeaderText(ALERT_HEADER);
+        alert.setContentText(ALERT_CONTEXT);
+
+        /* might be better to use .show() due to jdk bug https://bugs.openjdk.java.net/browse/JDK-8211137 */
+        alert.showAndWait();
+    }
     private static boolean isImage(File file) {
         try {
             BufferedImage im = ImageIO.read(file);
@@ -68,8 +83,4 @@ public class AppUtils {
 
     }
 
-    public static String getExtension(String name) {
-        String[] arr = name.split("\\.");
-        return arr[arr.length - 1];
-    }
 }
