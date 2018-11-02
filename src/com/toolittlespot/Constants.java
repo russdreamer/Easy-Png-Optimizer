@@ -15,6 +15,7 @@ public class Constants {
     public static final int SCENE_WIDTH = 500;
     public static final int SCENE_HEIGHT = 250;
 
+    // TODO: 02/11/2018 поменять для джарника
     public static final String DEFAULT_FILE_PATH = System.getProperty("user.dir") + "/src/com/toolittlespot/temporary_files_dir/";
     public static final String COMPRESSOR_PATH = "src/com/toolittlespot/compressor/pngCompressor";
 

@@ -1,5 +1,6 @@
 package com.toolittlespot.events;
 
+import com.toolittlespot.AppUtils;
 import com.toolittlespot.elements.ApplicationArea;
 import com.toolittlespot.elements.FileElement;
 import javafx.event.EventHandler;
@@ -36,6 +37,7 @@ public class ReplaceClickedEvent implements EventHandler<MouseEvent> {
             }
         }
 
+        AppUtils.showSavedAllert();
         application.getButtons().getButtons().setDisable(false);
         application.getDraggableBox().enableDraggable();
     }

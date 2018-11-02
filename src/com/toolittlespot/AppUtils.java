@@ -1,5 +1,6 @@
 package com.toolittlespot;
 
+import com.toolittlespot.controller.Main;
 import com.toolittlespot.elements.ApplicationArea;
 import com.toolittlespot.elements.FileElement;
 import com.toolittlespot.elements.LabelElement;
@@ -11,6 +12,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,9 +56,19 @@ public class AppUtils {
         else application.getButtons().setAllConvertedButtonsState();
     }
 
-    public static String getExtension(String name) {
+    static String getExtension(String name) {
         String[] arr = name.split("\\.");
         return arr[arr.length - 1];
+    }
+
+    public static String getAppLocation() {
+        String location = null;
+        try {
+            location = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        return location;
     }
 
     public static void showSavedAllert(){

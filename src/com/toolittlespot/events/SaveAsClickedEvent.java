@@ -37,11 +37,11 @@ public class SaveAsClickedEvent implements EventHandler<MouseEvent> {
         if (dir != null){
             try {
                 saveFilesToDir(application.getConvertedFiles(), dir);
+                AppUtils.showSavedAllert();
             } catch (IOException e) {
                 LOGGER.error("wrong destination path: " + dir.toPath());
             }
         }
-        AppUtils.showSavedAllert();
         application.getDraggableBox().enableDraggable();
         application.getButtons().getButtons().setDisable(false);
     }
