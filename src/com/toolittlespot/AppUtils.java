@@ -13,6 +13,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,6 +82,29 @@ public class AppUtils {
         /* might be better to use .show() due to jdk bug https://bugs.openjdk.java.net/browse/JDK-8211137 */
         alert.showAndWait();
     }
+
+    public static String createTempDir() {
+        try {
+            File file = new File(Files.createTempDirectory("easyPngOptimizer_temp").toUri());
+            file.deleteOnExit();
+            return file.getAbsolutePath();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static String createTempCompressorFile(){
+        try {
+            File file = new File(Files.createTempFile("pngCompressor", "").toUri());
+            file.deleteOnExit();
+            return file.getAbsolutePath();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private static boolean isImage(File file) {
         try {
             BufferedImage im = ImageIO.read(file);

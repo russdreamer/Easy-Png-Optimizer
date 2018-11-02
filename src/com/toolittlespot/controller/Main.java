@@ -11,6 +11,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import static com.toolittlespot.Constants.COMPRESSOR_PATH;
+import static com.toolittlespot.Constants.DEFAULT_FILE_PATH;
+
 
 public class Main extends Application {
 
@@ -20,7 +23,6 @@ public class Main extends Application {
     }
 
     private void createApplication(Stage primaryStage) {
-
         ApplicationArea application = new ApplicationArea();
         application.setTopPanel(new StackPane());
 
@@ -58,6 +60,8 @@ public class Main extends Application {
         primaryStage.setScene(application.getScene());
         primaryStage.setResizable(false);
         primaryStage.show();
+        System.out.println(DEFAULT_FILE_PATH);
+        System.out.println(COMPRESSOR_PATH);
     }
 
     /**
