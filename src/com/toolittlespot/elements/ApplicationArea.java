@@ -2,6 +2,7 @@ package com.toolittlespot.elements;
 
 import com.toolittlespot.FileMap;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
@@ -85,7 +86,10 @@ public class ApplicationArea {
 
     public void build(){
         root = new BorderPane();
-        topPanel.getChildren().addAll(grid.getGrid(), draggableBox.getDraggableField());
+        ScrollPane scrollPanel = new ScrollPane();
+        scrollPanel.setContent(grid.getGrid());
+        scrollPanel.setFitToWidth(true);
+        topPanel.getChildren().addAll(scrollPanel, draggableBox.getDraggableField());
         setBottomPanel(buttons.getButtons());
         root.setTop(bottomPanel);
         root.setBottom(topPanel);

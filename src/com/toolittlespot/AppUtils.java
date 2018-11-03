@@ -9,7 +9,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
