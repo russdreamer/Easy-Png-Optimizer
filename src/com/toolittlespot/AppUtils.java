@@ -12,9 +12,11 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,9 +87,10 @@ public class AppUtils {
 
     public static String createTempDir() {
         try {
-            File file = new File(Files.createTempDirectory("easyPngOptimizer_temp").toUri());
+            File file = new File(Files.createDirectories(
+                    Paths.get(System.getProperty("java.io.tmpdir") + "easyPngOptimizer/converted_files")).toUri());
             file.deleteOnExit();
-            return file.getAbsolutePath();
+            return file.getAbsolutePath() + "/";
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -96,8 +99,18 @@ public class AppUtils {
 
     public static String createTempCompressorFile(){
         try {
-            File file = new File(Files.createTempFile("pngCompressor", "").toUri());
+            InputStream inputStream = ClassLoader.getSystemClassLoader()
+                    .getSystemResourceAsStream("com/toolittlespot/compressor/pngCompressor");
+            Files.copy(
+                    inputStream,
+                    Paths.get(System.getProperty("java.io.tmpdir") + "easyPngOptimizer/pngCompressor"),
+                    StandardCopyOption.REPLACE_EXISTING
+            );
+
+            File file = new File(System.getProperty("java.io.tmpdir") + "easyPngOptimizer/pngCompressor");
             file.deleteOnExit();
+            makeFileExecutable(file);
+
             return file.getAbsolutePath();
         } catch (IOException e) {
             e.printStackTrace();
@@ -105,9 +118,21 @@ public class AppUtils {
         }
     }
 
+    private static void makeFileExecutable(File file) {
+        String[] processCommand = {"chmod", "+x", file.getAbsolutePath()};
+        try {
+            Process process = Runtime.getRuntime().exec(processCommand);
+            process.waitFor();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     private static boolean isImage(File file) {
         try {
-            BufferedImage im = ImageIO.read(file);
+           ImageIO.read(file);
         } catch (IOException e) {
             return false;
         }

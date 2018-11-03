@@ -60,8 +60,6 @@ public class Main extends Application {
         primaryStage.setScene(application.getScene());
         primaryStage.setResizable(false);
         primaryStage.show();
-        System.out.println(DEFAULT_FILE_PATH);
-        System.out.println(COMPRESSOR_PATH);
     }
 
     /**

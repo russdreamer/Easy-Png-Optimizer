@@ -27,7 +27,7 @@ public class ConvertFile implements Callable<Boolean> {
     private boolean processFile(FileElement fileElement) {
         String filePath = fileElement.getFile().getAbsolutePath();
         String fileNameToSave = fileElement.getFileNameToSave();
-        return convertFile(filePath, DEFAULT_FILE_PATH + fileNameToSave);
+        return convertFile(filePath, DEFAULT_FILE_PATH +fileNameToSave);
     }
 
     private boolean convertFile(String pathFrom, String pathTo) {
@@ -57,11 +57,15 @@ public class ConvertFile implements Callable<Boolean> {
     @Override
     public Boolean call() {
         if (processFile(fileElement)){
-            updateRow();
+            setDeleteOnExit();
             setAsConverted();
             return true;
         }
         return false;
+    }
+
+    private void setDeleteOnExit() {
+        new File(DEFAULT_FILE_PATH + fileElement.getFileNameToSave()).deleteOnExit();
     }
 
     private void setAsConverted() {
