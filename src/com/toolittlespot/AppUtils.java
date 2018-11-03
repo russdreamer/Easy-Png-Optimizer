@@ -98,8 +98,9 @@ public class AppUtils {
     }
 
     public static String createTempCompressorFile(){
+        /* get compressor from source and copy to temp dir */
         try {
-            InputStream inputStream = ClassLoader.getSystemClassLoader()
+            InputStream inputStream = ClassLoader
                     .getSystemResourceAsStream("com/toolittlespot/compressor/pngCompressor");
             Files.copy(
                     inputStream,
