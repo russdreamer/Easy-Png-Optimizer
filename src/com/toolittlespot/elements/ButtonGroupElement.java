@@ -20,7 +20,6 @@ public class ButtonGroupElement {
         stop = new Button("stop");
         replace = new Button("replace files");
         saveAs = new Button("save as...");
-        setAlignment();
         this.buttons.getChildren().addAll(convert, removeAll, stop, saveAs, replace);
         setDefaultButtonsState();
     }
@@ -53,14 +52,16 @@ public class ButtonGroupElement {
         setButtonState(true, true, true, false);
     }
 
-    private void setAlignment() {
+    public void setAlignment() {
         StackPane.setAlignment(convert, Pos.BOTTOM_RIGHT);
         StackPane.setAlignment(removeAll,Pos.BOTTOM_RIGHT);
-        StackPane.setMargin(convert, new Insets(0, 90,0 , 0) );
         StackPane.setAlignment(stop, Pos.BOTTOM_RIGHT );
-        StackPane.setAlignment(saveAs,Pos.BOTTOM_LEFT);
-        StackPane.setAlignment(replace,Pos.BOTTOM_LEFT);
-        StackPane.setMargin(saveAs, new Insets(0, 0,0 , 100) );
+        StackPane.setAlignment(saveAs,Pos.BOTTOM_RIGHT);
+        StackPane.setAlignment(replace,Pos.BOTTOM_RIGHT);
+        double shift = 0;
+        StackPane.setMargin(convert, new Insets(0, shift += removeAll.getWidth(),0 , 0) );
+        StackPane.setMargin(replace, new Insets(0, shift += convert.getWidth(),0 , 0) );
+        StackPane.setMargin(saveAs, new Insets(0, shift += replace.getWidth(), 0 , 0) );
     }
 
     public StackPane getButtons() {

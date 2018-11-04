@@ -23,6 +23,7 @@ public class Main extends Application {
     private void createApplication(Stage primaryStage) {
         ApplicationArea application = new ApplicationArea();
         application.setTopPanel(new StackPane());
+        application.setBottomPanel(new StackPane());
 
         GridElement gridElement = new GridElement(4);
         gridElement.createGrid();
@@ -58,7 +59,7 @@ public class Main extends Application {
         primaryStage.setScene(application.getScene());
         primaryStage.setResizable(false);
         primaryStage.show();
-        LangMap.getDict();
+        application.configurateLayouts();
     }
 
     /**

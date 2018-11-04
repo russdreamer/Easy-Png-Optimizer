@@ -1,11 +1,17 @@
 package com.toolittlespot.elements;
 
 import com.toolittlespot.FileMap;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,6 +29,7 @@ public class ApplicationArea {
     private GridElement grid;
     private DraggableElement draggableBox;
     private ButtonGroupElement buttons;
+    private MenuButton menuButton;
 
     /* engine side */
     private FileMap fileMap;
@@ -45,7 +52,6 @@ public class ApplicationArea {
 
     public void setTopPanel(StackPane topPanel) {
         this.topPanel = topPanel;
-        this.topPanel.setPrefHeight(SCENE_HEIGHT - 35);
     }
 
     public GridElement getGrid() {
@@ -80,20 +86,30 @@ public class ApplicationArea {
         return bottomPanel;
     }
 
-    private void setBottomPanel(StackPane bottomPanel) {
+    public void setBottomPanel(StackPane bottomPanel) {
         this.bottomPanel = bottomPanel;
     }
 
     public void build(){
+        createMenuButton();
         root = new BorderPane();
         ScrollPane scrollPanel = new ScrollPane();
         scrollPanel.setContent(grid.getGrid());
         scrollPanel.setFitToWidth(true);
         topPanel.getChildren().addAll(scrollPanel, draggableBox.getDraggableField());
-        setBottomPanel(buttons.getButtons());
-        root.setTop(bottomPanel);
-        root.setBottom(topPanel);
+        bottomPanel.getChildren().addAll(buttons.getButtons(), menuButton);
+        root.setTop(topPanel);
+        root.setBottom(bottomPanel);
         scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
+    }
+
+    private void createMenuButton() {
+        menuButton = new MenuButton();
+        InputStream russianFlag = ClassLoader.getSystemResourceAsStream("resources/images/rusFlag.png");
+        ImageView image = new ImageView(new Image(russianFlag));
+        menuButton.setGraphic(image);
+        menuButton.getItems().addAll(new MenuItem("rus"), new MenuItem("eng"));
+        StackPane.setAlignment(menuButton,Pos.BOTTOM_LEFT );
     }
 
     public Scene getScene() {
@@ -125,5 +141,21 @@ public class ApplicationArea {
 
     public List<FileElement> getUnconvertedFiles() {
         return unconvertedFiles;
+    }
+
+    public MenuButton getMenuButton() {
+        return menuButton;
+    }
+
+    public void configurateLayouts() {
+        double buttonsHeight = buttons.getConvert().getHeight();
+        this.topPanel.setPrefHeight(SCENE_HEIGHT - buttonsHeight);
+        /* language button size */
+        ImageView image = (ImageView) menuButton.getGraphic();
+        image.setFitWidth(buttonsHeight/1.5);
+        image.setFitHeight(buttonsHeight/1.5);
+
+        /* app buttons positions */
+        buttons.setAlignment();
     }
 }
