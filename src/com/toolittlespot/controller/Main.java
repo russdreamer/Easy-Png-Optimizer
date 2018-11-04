@@ -5,14 +5,12 @@ import com.toolittlespot.elements.ButtonGroupElement;
 import com.toolittlespot.elements.DraggableElement;
 import com.toolittlespot.elements.GridElement;
 import com.toolittlespot.events.*;
+import com.toolittlespot.language.LangMap;
 import javafx.application.Application;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import static com.toolittlespot.Constants.COMPRESSOR_PATH;
-import static com.toolittlespot.Constants.DEFAULT_FILE_PATH;
 
 
 public class Main extends Application {
@@ -60,6 +58,7 @@ public class Main extends Application {
         primaryStage.setScene(application.getScene());
         primaryStage.setResizable(false);
         primaryStage.show();
+        LangMap.getDict();
     }
 
     /**

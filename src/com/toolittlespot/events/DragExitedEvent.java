@@ -1,12 +1,12 @@
 package com.toolittlespot.events;
 
 import com.toolittlespot.elements.ApplicationArea;
+import com.toolittlespot.language.Dict;
+import com.toolittlespot.language.LangMap;
 import javafx.event.EventHandler;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
-
-import static com.toolittlespot.Constants.NOT_DRAGGED;
 
 public class DragExitedEvent implements EventHandler<DragEvent> {
 
@@ -25,7 +25,7 @@ public class DragExitedEvent implements EventHandler<DragEvent> {
             if (application.getGrid().getFileRows().size() > 0) {
                 application.getDraggableBox().getDragLabel().setText(null);
             }
-            else application.getDraggableBox().getDragLabel().setText(NOT_DRAGGED);
+            else application.getDraggableBox().getDragLabel().setText(LangMap.getDict(Dict.NOT_DRAGGED));
 
             application.getDraggableBox().getDraggableField().setStyle(null);
         }

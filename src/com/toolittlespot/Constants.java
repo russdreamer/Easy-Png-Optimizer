@@ -1,10 +1,6 @@
 package com.toolittlespot;
 
 public class Constants {
-    public static final String NOT_DRAGGED = "Drag files here";
-    public static final String DRAGGED = "Drop here";
-    public static final String EMPTY_FIELD = "--";
-
     /* colors */
     public static final String HEADER_BG_STYLE = "-fx-background-color: rgba(115, 248, 215, 0.5);";
     public static final String FILE_ROW_STYLE = "-fx-background-color: rgba(240, 255, 0, 0.2);";
@@ -18,12 +14,4 @@ public class Constants {
     // TODO: 02/11/2018 поменять для джарника
     public static final String DEFAULT_FILE_PATH = AppUtils.createTempDir();
     public static final String COMPRESSOR_PATH = AppUtils.createTempCompressorFile();
-
-    /* units */
-    public static final String BYTE = " bytes";
-
-    /* alert dialog */
-    public static final String ALERT_TITLE = "Information";
-    public static final String ALERT_HEADER = "Save successful";
-    public static final String ALERT_CONTEXT = "Click OK to close this window";
 }

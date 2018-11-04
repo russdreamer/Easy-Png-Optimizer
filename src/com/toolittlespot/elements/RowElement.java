@@ -1,7 +1,7 @@
 package com.toolittlespot.elements;
 
-
-import static com.toolittlespot.Constants.BYTE;
+import com.toolittlespot.language.Dict;
+import com.toolittlespot.language.LangMap;
 
 public class RowElement {
     private CellElement nameCell;
@@ -62,7 +62,7 @@ public class RowElement {
     }
 
     public void changeRowConvertValues(long afterValue, long reduceValue){
-        getAfterCell().setText(afterValue + BYTE);
+        getAfterCell().setText(afterValue + LangMap.getDict(Dict.BYTES));
         getReduceCell().setText(reduceValue + "%");
     }
 

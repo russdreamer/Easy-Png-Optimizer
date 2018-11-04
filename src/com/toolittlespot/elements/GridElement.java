@@ -27,6 +27,12 @@ public class GridElement {
      */
     public GridPane createGrid(){
         grid = new GridPane();
+        grid.setOnMouseClicked(event -> {
+            System.out.println(event.getEventType().getName());
+            System.out.println(event.getSource());
+            System.out.println(event.getTarget());
+
+        });
         grid.setGridLinesVisible(true);
 
         for (int i = 0; i < columnNum; i++) {

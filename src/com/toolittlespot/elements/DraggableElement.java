@@ -1,17 +1,17 @@
 package com.toolittlespot.elements;
 
+import com.toolittlespot.language.Dict;
+import com.toolittlespot.language.LangMap;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-
-import static com.toolittlespot.Constants.NOT_DRAGGED;
 
 public class DraggableElement {
     private VBox draggableField;
     private Label dragLabel;
 
     {
-       dragLabel = new Label(NOT_DRAGGED);
+       dragLabel = new Label(LangMap.getDict(Dict.NOT_DRAGGED));
     }
 
     public DraggableElement() {
