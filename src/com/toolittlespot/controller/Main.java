@@ -1,27 +1,29 @@
 package com.toolittlespot.controller;
 
-import com.toolittlespot.elements.ApplicationArea;
-import com.toolittlespot.elements.ButtonGroupElement;
-import com.toolittlespot.elements.DraggableElement;
-import com.toolittlespot.elements.GridElement;
+import com.toolittlespot.elements.*;
 import com.toolittlespot.events.*;
 import com.toolittlespot.language.LangMap;
 import javafx.application.Application;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.util.Locale;
 
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        createApplication(primaryStage);
+        String language = Locale.getDefault().getDisplayLanguage();
+        createApplication(primaryStage, language);
     }
 
-    private void createApplication(Stage primaryStage) {
+    private void createApplication(Stage primaryStage, String language) {
         ApplicationArea application = new ApplicationArea();
+        application.userLanguage = language;
         application.setTopPanel(new StackPane());
         application.setBottomPanel(new StackPane());
 
@@ -34,6 +36,9 @@ public class Main extends Application {
 
         ButtonGroupElement buttons = new ButtonGroupElement(new StackPane());
         application.setButtons(buttons);
+
+        MenuButtonElement languageButton = new MenuButtonElement(new MenuButton());
+        application.setLanguageButton(languageButton);
 
         /* get all necessary nodes for events setting */
         VBox dragTarget = dragElement.getDraggableField();

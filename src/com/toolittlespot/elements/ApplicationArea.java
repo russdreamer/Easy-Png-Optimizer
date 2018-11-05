@@ -29,7 +29,7 @@ public class ApplicationArea {
     private GridElement grid;
     private DraggableElement draggableBox;
     private ButtonGroupElement buttons;
-    private MenuButton menuButton;
+    private MenuButtonElement languageButton;
 
     /* engine side */
     private FileMap fileMap;
@@ -37,6 +37,7 @@ public class ApplicationArea {
     private List<FileElement> unconvertedFiles;
     private List<Process> processList;
     private ExecutorService executorService;
+    public static String userLanguage;
 
     {
         fileMap = new FileMap();
@@ -91,25 +92,15 @@ public class ApplicationArea {
     }
 
     public void build(){
-        createMenuButton();
         root = new BorderPane();
         ScrollPane scrollPanel = new ScrollPane();
         scrollPanel.setContent(grid.getGrid());
         scrollPanel.setFitToWidth(true);
         topPanel.getChildren().addAll(scrollPanel, draggableBox.getDraggableField());
-        bottomPanel.getChildren().addAll(buttons.getButtons(), menuButton);
+        bottomPanel.getChildren().addAll(buttons.getButtons(), languageButton.getMenuButton());
         root.setTop(topPanel);
         root.setBottom(bottomPanel);
         scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
-    }
-
-    private void createMenuButton() {
-        menuButton = new MenuButton();
-        InputStream russianFlag = ClassLoader.getSystemResourceAsStream("resources/images/rusFlag.png");
-        ImageView image = new ImageView(new Image(russianFlag));
-        menuButton.setGraphic(image);
-        menuButton.getItems().addAll(new MenuItem("rus"), new MenuItem("eng"));
-        StackPane.setAlignment(menuButton,Pos.BOTTOM_LEFT );
     }
 
     public Scene getScene() {
@@ -143,17 +134,21 @@ public class ApplicationArea {
         return unconvertedFiles;
     }
 
-    public MenuButton getMenuButton() {
-        return menuButton;
+    public MenuButtonElement getLanguageButton() {
+        return languageButton;
+    }
+
+    public void setLanguageButton(MenuButtonElement languageButton) {
+        this.languageButton = languageButton;
     }
 
     public void configurateLayouts() {
         double buttonsHeight = buttons.getConvert().getHeight();
         this.topPanel.setPrefHeight(SCENE_HEIGHT - buttonsHeight);
         /* language button size */
-        ImageView image = (ImageView) menuButton.getGraphic();
+        /*ImageView image = (ImageView) languageButton.getMenuButton().getGraphic();
         image.setFitWidth(buttonsHeight/1.5);
-        image.setFitHeight(buttonsHeight/1.5);
+        image.setFitHeight(buttonsHeight/1.5);*/
 
         /* app buttons positions */
         buttons.setAlignment();

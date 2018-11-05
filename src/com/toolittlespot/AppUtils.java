@@ -112,6 +112,7 @@ public class AppUtils {
             File file = new File(System.getProperty("java.io.tmpdir") + "easyPngOptimizer/pngCompressor");
             file.deleteOnExit();
             makeFileExecutable(file);
+            inputStream.close();
 
             return file.getAbsolutePath();
         } catch (IOException e) {

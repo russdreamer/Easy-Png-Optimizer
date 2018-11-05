@@ -1,7 +1,8 @@
 package com.toolittlespot.language;
 
+import com.toolittlespot.elements.ApplicationArea;
+
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 public class LangMap {
@@ -21,11 +22,10 @@ public class LangMap {
 
     public static String getDict(Dict word){
             return getDict().get(word.name());
-
     }
 
     private static void determinateUserLanguage() {
-        String language = Locale.getDefault().getDisplayLanguage();
+        String language = ApplicationArea.userLanguage;
         switch (language){
             case "English": currentDict = englishDict; break;
             case "Russian": currentDict = russianDict; break;
