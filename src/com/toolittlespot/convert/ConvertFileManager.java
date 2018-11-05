@@ -41,5 +41,6 @@ public class ConvertFileManager extends Thread{
         executor.invokeAll(threads);
         AppUtils.setButtonState(application);
         application.getDraggableBox().enableDraggable();
+        application.getLanguageButton().getMenuButton().setDisable(false);
     }
 }

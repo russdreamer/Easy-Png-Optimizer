@@ -23,6 +23,7 @@ public class ReplaceClickedEvent implements EventHandler<MouseEvent> {
 
     @Override
     public void handle(MouseEvent event) {
+        application.getLanguageButton().getMenuButton().setDisable(true);
         application.getButtons().getButtons().setDisable(true);
         application.getDraggableBox().disableDraggable();
         List<FileElement> files = application.getConvertedFiles();
@@ -39,6 +40,7 @@ public class ReplaceClickedEvent implements EventHandler<MouseEvent> {
 
         AppUtils.showSavedAllert();
         application.getButtons().getButtons().setDisable(false);
+        application.getLanguageButton().getMenuButton().setDisable(false);
         application.getDraggableBox().enableDraggable();
     }
 }

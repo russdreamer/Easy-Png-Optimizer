@@ -6,6 +6,7 @@ import com.toolittlespot.language.LangMap;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 
@@ -22,7 +23,14 @@ public class LanguageClickedEvent implements EventHandler<ActionEvent> {
 
     @Override
     public void handle(ActionEvent event) {
-        LangMap.changeLanguage(languageName);
-        mainController.restart(languageName);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Language changing");
+        alert.setHeaderText("Current progress will be lost");
+        alert.setContentText("Click OK to continue. To cancel, click CANCEL");
+        alert.showAndWait();
+        if (alert.getResult() == ButtonType.OK){
+            LangMap.changeLanguage(languageName);
+            mainController.restart(languageName);
+        }
     }
 }

@@ -30,6 +30,7 @@ public class SaveAsClickedEvent implements EventHandler<MouseEvent> {
     public void handle(MouseEvent event) {
         application.getDraggableBox().disableDraggable();
         application.getButtons().getButtons().setDisable(true);
+        application.getLanguageButton().getMenuButton().setDisable(true);
 
         DirectoryChooser directoryChooser = new DirectoryChooser();
         /* can be fatal errors due to JDK bug https://bugs.openjdk.java.net/browse/JDK-8211137 */
@@ -44,6 +45,7 @@ public class SaveAsClickedEvent implements EventHandler<MouseEvent> {
         }
         application.getDraggableBox().enableDraggable();
         application.getButtons().getButtons().setDisable(false);
+        application.getLanguageButton().getMenuButton().setDisable(true);
     }
 
     private void saveFilesToDir(List<FileElement> fileList, File dir) throws IOException {
