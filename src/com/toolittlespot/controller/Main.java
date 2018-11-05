@@ -15,9 +15,16 @@ import java.util.Locale;
 
 public class Main extends Application {
 
+    private Stage primaryStage;
+
     @Override
     public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage;
         String language = Locale.getDefault().getDisplayLanguage();
+        createApplication(primaryStage, language);
+    }
+
+    public void restart(String language) {
         createApplication(primaryStage, language);
     }
 
@@ -37,7 +44,7 @@ public class Main extends Application {
         ButtonGroupElement buttons = new ButtonGroupElement(new StackPane());
         application.setButtons(buttons);
 
-        MenuButtonElement languageButton = new MenuButtonElement(new MenuButton());
+        MenuButtonElement languageButton = new MenuButtonElement(new MenuButton(), this);
         application.setLanguageButton(languageButton);
 
         /* get all necessary nodes for events setting */

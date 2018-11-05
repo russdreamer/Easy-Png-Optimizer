@@ -1,24 +1,19 @@
 package com.toolittlespot.elements;
 
 import com.toolittlespot.FileMap;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.toolittlespot.Constants.*;
+import static com.toolittlespot.Constants.SCENE_HEIGHT;
+import static com.toolittlespot.Constants.SCENE_WIDTH;
 
 public class ApplicationArea {
     /* UI */
@@ -149,4 +144,6 @@ public class ApplicationArea {
         /* app buttons positions */
         buttons.setAlignment();
     }
+
+
 }

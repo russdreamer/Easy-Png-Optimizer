@@ -1,5 +1,7 @@
 package com.toolittlespot.elements;
 
+import com.toolittlespot.controller.Main;
+import com.toolittlespot.events.LanguageClickedEvent;
 import javafx.geometry.Pos;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
@@ -16,48 +18,62 @@ import static com.toolittlespot.Constants.ICON_BUTTON_SIZE;
 
 public class MenuButtonElement {
     private MenuButton menuButton;
-    private ImageView rusFlag;
-    private ImageView engFlag;
+    private Main mainController;
 
-    public MenuButtonElement(MenuButton menuButton) {
+    public MenuButtonElement(MenuButton menuButton, Main main) {
         this.menuButton = menuButton;
+        this.mainController = main;
         createButton();
     }
 
     private void createButton() {
-        engFlag = createImageView("resources/images/engFlag.png");
-        rusFlag = createImageView("resources/images/rusFlag.png");
-        List<ImageView> languages = new ArrayList<>();
-        languages.add(engFlag);
-        languages.add(rusFlag);
+        MenuItemElement eng = createMenuItemEl("resources/images/English.png", "English");
+        MenuItemElement rus = createMenuItemEl("resources/images/Russian.png", "Russian");
+        List<MenuItemElement> languages = new ArrayList<>();
+        languages.add(eng);
+        languages.add(rus);
 
-        switch (ApplicationArea.userLanguage){
-            case "Russian": menuButton.setGraphic(rusFlag); languages.remove(rusFlag); break;
-            default: menuButton.setGraphic(engFlag); languages.remove(engFlag); break;
+        if ( !setMenuButtonGraphic(languages) ){
+            menuButton.setGraphic(eng.getLanguageItem().getGraphic());
         }
 
-        List<MenuItem> items = createItems(languages);
-        menuButton.getItems().addAll(items);
+        List<MenuItem> menuItems = createMenuItems(languages);
+        menuButton.getItems().addAll(menuItems);
         StackPane.setAlignment(menuButton, Pos.BOTTOM_LEFT );
     }
 
-    private List<MenuItem> createItems(List<ImageView> languages) {
-        List<MenuItem> items = new ArrayList<>();
-        languages.forEach((lang)-> items.add(new MenuItem(null, lang)));
-        return items;
+    private List<MenuItem> createMenuItems(List<MenuItemElement> languages) {
+        List<MenuItem> list = new ArrayList<>();
+        languages.forEach((item) -> list.add(item.getLanguageItem() ));
+        return list;
     }
 
-    private ImageView createImageView(String path) {
+    private boolean setMenuButtonGraphic(List<MenuItemElement> languages) {
+        for (MenuItemElement element: languages) {
+            if (ApplicationArea.userLanguage.equals(element.getLanguageName())){
+                menuButton.setGraphic(element.getLanguageItem().getGraphic());
+                languages.remove(element);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private MenuItemElement createMenuItemEl(String path, String language) {
         InputStream img = ClassLoader.getSystemResourceAsStream(path);
         ImageView imageView = new ImageView(new Image(img));
+        imageView.setFitHeight(ICON_BUTTON_SIZE);
+        imageView.setFitWidth(ICON_BUTTON_SIZE);
+
         try {
             img.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        imageView.setFitHeight(ICON_BUTTON_SIZE);
-        imageView.setFitWidth(ICON_BUTTON_SIZE);
-        return imageView;
+
+        MenuItem menuItem = new MenuItem(null, imageView);
+        menuItem.setOnAction(new LanguageClickedEvent(mainController, language));
+        return new MenuItemElement(menuItem, language);
     }
 
     public MenuButton getMenuButton() {

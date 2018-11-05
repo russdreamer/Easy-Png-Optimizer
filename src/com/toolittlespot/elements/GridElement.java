@@ -1,5 +1,7 @@
 package com.toolittlespot.elements;
 
+import com.toolittlespot.language.Dict;
+import com.toolittlespot.language.LangMap;
 import javafx.geometry.HPos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
@@ -47,7 +49,11 @@ public class GridElement {
     }
 
     private RowElement createHeaderRow() {
-        List<Label> labels = LabelElement.createLabels("name", "before", "after", "reduce");
+        List<Label> labels = LabelElement.createLabels(
+                LangMap.getDict(Dict.NAME_ROW)
+                , LangMap.getDict(Dict.BEFORE_ROW)
+                , LangMap.getDict(Dict.AFTER_ROW)
+                , LangMap.getDict(Dict.REDUCE_ROW));
         headerRow = createRowFromLabels(labels, 0, HEADER_BG_STYLE);
         setHeaderElNum(grid.getChildren().size());
         return headerRow;

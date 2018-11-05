@@ -24,13 +24,17 @@ public class LangMap {
             return getDict().get(word.name());
     }
 
-    private static void determinateUserLanguage() {
-        String language = ApplicationArea.userLanguage;
+    public static void changeLanguage(String language){
         switch (language){
             case "English": currentDict = englishDict; break;
             case "Russian": currentDict = russianDict; break;
             default: currentDict = englishDict; break;
         }
+    }
+
+    private static void determinateUserLanguage() {
+        String language = ApplicationArea.userLanguage;
+        changeLanguage(language);
     }
 
     private static synchronized void loadDictionaries() {
