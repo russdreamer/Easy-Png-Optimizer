@@ -2,6 +2,7 @@ package com.toolittlespot.events;
 
 import com.toolittlespot.controller.Main;
 import com.toolittlespot.elements.ApplicationArea;
+import com.toolittlespot.language.Dict;
 import com.toolittlespot.language.LangMap;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,11 +25,14 @@ public class LanguageClickedEvent implements EventHandler<ActionEvent> {
     @Override
     public void handle(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Language changing");
-        alert.setHeaderText("Current progress will be lost");
-        alert.setContentText("Click OK to continue. To cancel, click CANCEL");
+        ButtonType change = new ButtonType(LangMap.getDict(Dict.LANGUAGE_CHANGE_BUTTON));
+        ButtonType cancel = new ButtonType(LangMap.getDict(Dict.LANGUAGE_CANCEL_BUTTON));
+        alert.getButtonTypes().setAll(change, cancel);
+        alert.setTitle(LangMap.getDict(Dict.LANGUAGE_ALERT_TITLE));
+        alert.setHeaderText(null);
+        alert.setContentText(LangMap.getDict(Dict.LANGUAGE_ALERT_CONTEXT));
         alert.showAndWait();
-        if (alert.getResult() == ButtonType.OK){
+        if (alert.getResult() == change){
             LangMap.changeLanguage(languageName);
             mainController.restart(languageName);
         }

@@ -65,6 +65,26 @@ public enum Dict {
             "Нажмите ОК, чтобы закрыть это окно",
             "Click OK to close this window"
     ),
+    LANGUAGE_ALERT_TITLE(
+            "Смена языка",
+            "Language changing"
+    ),
+    LANGUAGE_ALERT_HEADER(
+            "Текущий прогресс будет потерян",
+            "Current progress will be lost"
+    ),
+    LANGUAGE_ALERT_CONTEXT(
+            "Нажмите \'Сменить\', чтобы продолжить. \'Отмена\' для отмены",
+            "Click \'Ok\' to continue. To cancel, click \'Cancel\'"
+    ),
+    LANGUAGE_CHANGE_BUTTON(
+            "Сменить",
+            "Ok"
+    ),
+    LANGUAGE_CANCEL_BUTTON(
+            "Отмена",
+            "Cancel"
+    ),
     ;
 
 
