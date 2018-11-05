@@ -42,8 +42,8 @@ public class Main extends Application {
 
         /* get all necessary nodes for events setting */
         VBox dragTarget = dragElement.getDraggableField();
-        Button convertButton = buttons.getConvert();
-        Button removeAllButton = buttons.getRemoveAll();
+        Button convertButton = buttons.getCompress();
+        Button removeAllButton = buttons.getClearAll();
         Button replaceButton = buttons.getReplace();
         Button saveAsButton = buttons.getSaveAs();
         Button stopButton = buttons.getStop();

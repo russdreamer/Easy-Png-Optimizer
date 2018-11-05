@@ -143,12 +143,8 @@ public class ApplicationArea {
     }
 
     public void configurateLayouts() {
-        double buttonsHeight = buttons.getConvert().getHeight();
+        double buttonsHeight = buttons.getCompress().getHeight();
         this.topPanel.setPrefHeight(SCENE_HEIGHT - buttonsHeight);
-        /* language button size */
-        /*ImageView image = (ImageView) languageButton.getMenuButton().getGraphic();
-        image.setFitWidth(buttonsHeight/1.5);
-        image.setFitHeight(buttonsHeight/1.5);*/
 
         /* app buttons positions */
         buttons.setAlignment();

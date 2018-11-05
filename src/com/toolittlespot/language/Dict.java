@@ -29,11 +29,11 @@ public enum Dict {
             "--",
             "--"
     ),
-    CONVERT_BUTTON(
+    COMPRESS_BUTTON(
             "сжать",
             "compress"
     ),
-    REMOVE_ALL_BUTTON(
+    CLEAR_ALL_BUTTON(
             "очистить",
             "clear all"
     ),
@@ -65,14 +65,6 @@ public enum Dict {
             "Нажмите ОК, чтобы закрыть это окно",
             "Click OK to close this window"
     ),
-   /* SAVE_AS_BUTTON(
-            "",
-            ""
-    ),
-    SAVE_AS_BUTTON(
-            "",
-            ""
-    ),*/
     ;
 
 
