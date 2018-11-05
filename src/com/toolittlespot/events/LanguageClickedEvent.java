@@ -29,7 +29,7 @@ public class LanguageClickedEvent implements EventHandler<ActionEvent> {
         ButtonType cancel = new ButtonType(LangMap.getDict(Dict.LANGUAGE_CANCEL_BUTTON));
         alert.getButtonTypes().setAll(change, cancel);
         alert.setTitle(LangMap.getDict(Dict.LANGUAGE_ALERT_TITLE));
-        alert.setHeaderText(null);
+        alert.setHeaderText(LangMap.getDict(Dict.LANGUAGE_ALERT_HEADER));
         alert.setContentText(LangMap.getDict(Dict.LANGUAGE_ALERT_CONTEXT));
         alert.showAndWait();
         if (alert.getResult() == change){
