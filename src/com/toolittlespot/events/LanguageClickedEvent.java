@@ -1,6 +1,5 @@
 package com.toolittlespot.events;
 
-import com.toolittlespot.controller.Main;
 import com.toolittlespot.elements.ApplicationArea;
 import com.toolittlespot.language.Dict;
 import com.toolittlespot.language.LangMap;
@@ -8,10 +7,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.MenuItem;
-import javafx.scene.input.MouseEvent;
-
-import java.util.List;
 
 public class LanguageClickedEvent implements EventHandler<ActionEvent> {
     private ApplicationArea application;;
@@ -24,6 +19,7 @@ public class LanguageClickedEvent implements EventHandler<ActionEvent> {
 
     @Override
     public void handle(ActionEvent event) {
+        /* if no application progress - no need to show notification */
         if (application.getUnconvertedFiles().size() > 0) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             ButtonType change = new ButtonType(LangMap.getDict(Dict.LANGUAGE_CHANGE_BUTTON));

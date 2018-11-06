@@ -10,7 +10,7 @@ public class Constants {
 
     public static final int SCENE_WIDTH = 500;
     public static final int SCENE_HEIGHT = 250;
-    public static final int ICON_BUTTON_SIZE = 20;
+    public static final int ICON_BUTTON_SIZE = 17;
 
     // TODO: 02/11/2018 поменять для джарника
     public static final String DEFAULT_FILE_PATH = AppUtils.createTempDir();
