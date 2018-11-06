@@ -1,6 +1,7 @@
 package com.toolittlespot.elements;
 
 import com.toolittlespot.FileMap;
+import com.toolittlespot.controller.Main;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
@@ -17,6 +18,7 @@ import static com.toolittlespot.Constants.SCENE_WIDTH;
 
 public class ApplicationArea {
     /* UI */
+    private Main mainController;
     private Scene scene;
     private StackPane topPanel;
     private StackPane bottomPanel;
@@ -39,6 +41,10 @@ public class ApplicationArea {
         processList = Collections.synchronizedList(new ArrayList<>());
         convertedFiles = Collections.synchronizedList(new ArrayList<>());
         unconvertedFiles = Collections.synchronizedList(new ArrayList<>());
+    }
+
+    public ApplicationArea(Main main) {
+        this.mainController = main;
     }
 
 
@@ -145,5 +151,7 @@ public class ApplicationArea {
         buttons.setAlignment();
     }
 
-
+    public Main getMainController() {
+        return mainController;
+    }
 }

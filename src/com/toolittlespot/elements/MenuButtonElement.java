@@ -18,11 +18,11 @@ import static com.toolittlespot.Constants.ICON_BUTTON_SIZE;
 
 public class MenuButtonElement {
     private MenuButton menuButton;
-    private Main mainController;
+    private ApplicationArea application;
 
-    public MenuButtonElement(MenuButton menuButton, Main main) {
+    public MenuButtonElement(MenuButton menuButton, ApplicationArea application) {
         this.menuButton = menuButton;
-        this.mainController = main;
+        this.application = application;
         createButton();
     }
 
@@ -72,7 +72,7 @@ public class MenuButtonElement {
         }
 
         MenuItem menuItem = new MenuItem(null, imageView);
-        menuItem.setOnAction(new LanguageClickedEvent(mainController, language));
+        menuItem.setOnAction(new LanguageClickedEvent(application, language));
         return new MenuItemElement(menuItem, language);
     }
 

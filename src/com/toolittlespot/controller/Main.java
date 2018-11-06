@@ -29,7 +29,7 @@ public class Main extends Application {
     }
 
     private void createApplication(Stage primaryStage, String language) {
-        ApplicationArea application = new ApplicationArea();
+        ApplicationArea application = new ApplicationArea(this);
         application.userLanguage = language;
         application.setTopPanel(new StackPane());
         application.setBottomPanel(new StackPane());
@@ -44,7 +44,7 @@ public class Main extends Application {
         ButtonGroupElement buttons = new ButtonGroupElement(new StackPane());
         application.setButtons(buttons);
 
-        MenuButtonElement languageButton = new MenuButtonElement(new MenuButton(), this);
+        MenuButtonElement languageButton = new MenuButtonElement(new MenuButton(), application);
         application.setLanguageButton(languageButton);
 
         /* get all necessary nodes for events setting */

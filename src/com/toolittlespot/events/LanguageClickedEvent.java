@@ -14,27 +14,34 @@ import javafx.scene.input.MouseEvent;
 import java.util.List;
 
 public class LanguageClickedEvent implements EventHandler<ActionEvent> {
-    private final Main mainController;
+    private ApplicationArea application;;
     private final String languageName;
 
-    public LanguageClickedEvent(Main main, String languageName) {
-        this.mainController = main;
+    public LanguageClickedEvent(ApplicationArea application, String languageName) {
+        this.application = application;
         this.languageName = languageName;
     }
 
     @Override
     public void handle(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        ButtonType change = new ButtonType(LangMap.getDict(Dict.LANGUAGE_CHANGE_BUTTON));
-        ButtonType cancel = new ButtonType(LangMap.getDict(Dict.LANGUAGE_CANCEL_BUTTON));
-        alert.getButtonTypes().setAll(change, cancel);
-        alert.setTitle(LangMap.getDict(Dict.LANGUAGE_ALERT_TITLE));
-        alert.setHeaderText(LangMap.getDict(Dict.LANGUAGE_ALERT_HEADER));
-        alert.setContentText(LangMap.getDict(Dict.LANGUAGE_ALERT_CONTEXT));
-        alert.showAndWait();
-        if (alert.getResult() == change){
-            LangMap.changeLanguage(languageName);
-            mainController.restart(languageName);
+        if (application.getUnconvertedFiles().size() > 0) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            ButtonType change = new ButtonType(LangMap.getDict(Dict.LANGUAGE_CHANGE_BUTTON));
+            ButtonType cancel = new ButtonType(LangMap.getDict(Dict.LANGUAGE_CANCEL_BUTTON));
+            alert.getButtonTypes().setAll(change, cancel);
+            alert.setTitle(LangMap.getDict(Dict.LANGUAGE_ALERT_TITLE));
+            alert.setHeaderText(LangMap.getDict(Dict.LANGUAGE_ALERT_HEADER));
+            alert.setContentText(LangMap.getDict(Dict.LANGUAGE_ALERT_CONTEXT));
+            alert.showAndWait();
+            if (alert.getResult() == change){
+                LangMap.changeLanguage(languageName);
+                application.getMainController().restart(languageName);
+            }
         }
+        else {
+            LangMap.changeLanguage(languageName);
+            application.getMainController().restart(languageName);
+        }
+
     }
 }
