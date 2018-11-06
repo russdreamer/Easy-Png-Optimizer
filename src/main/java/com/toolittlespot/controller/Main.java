@@ -19,7 +19,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        AppUtils.createLogFile();
         this.primaryStage = primaryStage;
         String language = Locale.getDefault().getDisplayLanguage();
         createApplication(primaryStage, language);

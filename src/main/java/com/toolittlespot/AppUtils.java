@@ -145,23 +145,4 @@ public class AppUtils {
         return "png".equals(extension);
 
     }
-
-    public static void createLogFile(){
-        try {
-            logFile = Files.createFile(Paths.get("/Users/iga/Desktop/myJar/png_log.txt"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void log(String text){
-        try {
-            PrintWriter pw = new PrintWriter(new FileOutputStream(new File(logFile.toUri())), true);
-            pw.append(text);
-            pw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 }
