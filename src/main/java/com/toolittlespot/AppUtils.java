@@ -87,7 +87,7 @@ public class AppUtils {
     public static String createTempDir() {
         try {
             File file = new File(Files.createDirectories(
-                    Paths.get(System.getProperty("java.io.tmpdir") + "easyPngOptimizer/converted_files")).toUri());
+                    Paths.get(System.getProperty("java.io.tmpdir") + "easyPng/converted_files")).toUri());
             file.deleteOnExit();
             return file.getAbsolutePath() + "/";
         } catch (IOException e) {
@@ -100,14 +100,14 @@ public class AppUtils {
         /* get compressor from source and copy to temp dir */
         try {
             InputStream inputStream = ClassLoader
-                    .getSystemResourceAsStream("main/java/com/toolittlespot/compressor/pngCompressor");
+                    .getSystemResourceAsStream("main/java/com/toolittlespot/compressor/pngquant");
             Files.copy(
                     inputStream,
-                    Paths.get(System.getProperty("java.io.tmpdir") + "easyPngOptimizer/pngCompressor"),
+                    Paths.get(System.getProperty("java.io.tmpdir") + "easyPng/pngquant"),
                     StandardCopyOption.REPLACE_EXISTING
             );
 
-            File file = new File(System.getProperty("java.io.tmpdir") + "easyPngOptimizer/pngCompressor");
+            File file = new File(System.getProperty("java.io.tmpdir") + "easyPng/pngquant");
             file.deleteOnExit();
             makeFileExecutable(file);
             inputStream.close();

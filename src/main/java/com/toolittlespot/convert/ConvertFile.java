@@ -5,7 +5,7 @@ import main.java.com.toolittlespot.elements.FileElement;
 import main.java.com.toolittlespot.elements.RowElement;
 import javafx.application.Platform;
 import main.java.com.toolittlespot.Constants;
-//import org.apache.log4j.Logger;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,7 +14,7 @@ import java.io.InputStreamReader;
 import java.util.concurrent.Callable;
 
 public class ConvertFile implements Callable<Boolean> {
-    //private final static Logger LOGGER = Logger.getLogger(ConvertFile.class);
+    private final static Logger LOGGER = Logger.getLogger(ConvertFile.class);
     private FileElement fileElement;
     private ApplicationArea application;
 
@@ -30,7 +30,11 @@ public class ConvertFile implements Callable<Boolean> {
     }
 
     private boolean convertFile(String pathFrom, String pathTo) {
-        String[] processCommand = {Constants.COMPRESSOR_PATH, pathFrom, pathTo};
+        String[] processCommand = {
+                Constants.COMPRESSOR_PATH,
+                "--strip", "--speed", "1", "--nofs", "--force", "--output", //options
+                pathTo, pathFrom};
+
         Process process;
         BufferedReader reader;
 
@@ -39,11 +43,11 @@ public class ConvertFile implements Callable<Boolean> {
             application.getProcessList().add(process);
             process.waitFor();
             reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            //LOGGER.trace(reader.readLine());
+            LOGGER.trace(reader.readLine());
             reader.close();
         }
         catch (IOException | InterruptedException e) {
-            //LOGGER.warn("converting file is interrupted.");
+            LOGGER.warn("converting file is interrupted.");
             return false;
         }
         return true;
