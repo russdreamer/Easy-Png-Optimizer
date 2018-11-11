@@ -1,6 +1,5 @@
 package main.java.com.toolittlespot.controller;
 
-import main.java.com.toolittlespot.AppUtils;
 import main.java.com.toolittlespot.elements.*;
 import main.java.com.toolittlespot.events.*;
 import javafx.application.Application;
