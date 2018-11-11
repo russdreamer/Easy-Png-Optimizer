@@ -66,7 +66,7 @@ public class Main extends Application {
 
         application.build();
 
-        primaryStage.setTitle("Easy png optimizer");
+        primaryStage.setTitle("EASY.png");
         primaryStage.setScene(application.getScene());
         primaryStage.setResizable(false);
         primaryStage.show();
