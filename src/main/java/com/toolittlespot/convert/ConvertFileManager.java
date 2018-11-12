@@ -1,6 +1,6 @@
 package main.java.com.toolittlespot.convert;
 
-import main.java.com.toolittlespot.AppUtils;
+import main.java.com.toolittlespot.utils.AppUtils;
 import main.java.com.toolittlespot.elements.ApplicationArea;
 import main.java.com.toolittlespot.elements.FileElement;
 

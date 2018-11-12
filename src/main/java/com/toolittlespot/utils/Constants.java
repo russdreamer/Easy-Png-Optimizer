@@ -1,4 +1,4 @@
-package main.java.com.toolittlespot;
+package main.java.com.toolittlespot.utils;
 
 public class Constants {
     /* colors */

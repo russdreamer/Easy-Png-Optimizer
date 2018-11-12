@@ -1,4 +1,4 @@
-package main.java.com.toolittlespot;
+package main.java.com.toolittlespot.utils;
 
 import main.java.com.toolittlespot.controller.Main;
 import main.java.com.toolittlespot.elements.ApplicationArea;
@@ -117,6 +117,20 @@ public class AppUtils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static SystemOS getSystemOS(){
+        String OS = System.getProperty("os.name").toLowerCase();
+        if (OS.indexOf("win") >= 0){
+            return SystemOS.WINDOWS;
+        }
+        else if (OS.indexOf("mac") >= 0){
+            return SystemOS.MAC;
+        }
+        else if (OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0){
+            return SystemOS.UNIX;
+        }
+        return SystemOS.OTHER;
     }
 
     private static void makeFileExecutable(File file) {

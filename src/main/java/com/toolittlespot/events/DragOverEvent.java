@@ -7,7 +7,7 @@ import javafx.event.EventHandler;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
-import main.java.com.toolittlespot.Constants;
+import main.java.com.toolittlespot.utils.Constants;
 
 public class DragOverEvent implements EventHandler<DragEvent> {
 

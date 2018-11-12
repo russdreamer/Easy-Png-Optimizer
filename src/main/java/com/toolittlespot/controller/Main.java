@@ -1,5 +1,9 @@
 package main.java.com.toolittlespot.controller;
 
+import com.sun.deploy.util.SystemUtils;
+import javafx.scene.Scene;
+import javafx.scene.control.MenuBar;
+import javafx.scene.layout.BorderPane;
 import main.java.com.toolittlespot.elements.*;
 import main.java.com.toolittlespot.events.*;
 import javafx.application.Application;
@@ -8,7 +12,14 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import main.java.com.toolittlespot.utils.AppUtils;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Locale;
 
 
@@ -29,6 +40,9 @@ public class Main extends Application {
 
     private void createApplication(Stage primaryStage, String language) {
         ApplicationArea application = new ApplicationArea(this);
+
+        application.setSystemOS(AppUtils.getSystemOS());
+
         application.userLanguage = language;
         application.setTopPanel(new StackPane());
         application.setBottomPanel(new StackPane());

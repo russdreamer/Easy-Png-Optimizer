@@ -1,6 +1,6 @@
 package main.java.com.toolittlespot.events;
 
-import main.java.com.toolittlespot.AppUtils;
+import main.java.com.toolittlespot.utils.AppUtils;
 import main.java.com.toolittlespot.elements.ApplicationArea;
 import javafx.event.EventHandler;
 import javafx.scene.input.DragEvent;

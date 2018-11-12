@@ -1,6 +1,6 @@
 package main.java.com.toolittlespot.events;
 
-import main.java.com.toolittlespot.AppUtils;
+import main.java.com.toolittlespot.utils.AppUtils;
 import main.java.com.toolittlespot.elements.ApplicationArea;
 import main.java.com.toolittlespot.elements.FileElement;
 import javafx.event.EventHandler;
@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 
-import static main.java.com.toolittlespot.Constants.DEFAULT_FILE_PATH;
+import static main.java.com.toolittlespot.utils.Constants.DEFAULT_FILE_PATH;
 
 public class SaveAsClickedEvent implements EventHandler<MouseEvent> {
     private final ApplicationArea application;

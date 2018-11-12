@@ -4,7 +4,7 @@ import main.java.com.toolittlespot.elements.ApplicationArea;
 import main.java.com.toolittlespot.elements.FileElement;
 import main.java.com.toolittlespot.elements.RowElement;
 import javafx.application.Platform;
-import main.java.com.toolittlespot.Constants;
+import main.java.com.toolittlespot.utils.Constants;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;

@@ -13,7 +13,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static main.java.com.toolittlespot.Constants.ICON_BUTTON_SIZE;
+import static main.java.com.toolittlespot.utils.Constants.ICON_BUTTON_SIZE;
 
 public class MenuButtonElement {
     private MenuButton menuButton;

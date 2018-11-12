@@ -1,12 +1,13 @@
 package main.java.com.toolittlespot.elements;
 
-import main.java.com.toolittlespot.FileMap;
+import main.java.com.toolittlespot.utils.FileMap;
 import main.java.com.toolittlespot.controller.Main;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import main.java.com.toolittlespot.Constants;
+import main.java.com.toolittlespot.utils.Constants;
+import main.java.com.toolittlespot.utils.SystemOS;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,6 +28,7 @@ public class ApplicationArea {
     private MenuButtonElement languageButton;
 
     /* engine side */
+    private SystemOS systemOS;
     private FileMap fileMap;
     private List<FileElement> convertedFiles;
     private List<FileElement> unconvertedFiles;
@@ -151,5 +153,13 @@ public class ApplicationArea {
 
     public Main getMainController() {
         return mainController;
+    }
+
+    public SystemOS getSystemOS() {
+        return systemOS;
+    }
+
+    public void setSystemOS(SystemOS systemOS) {
+        this.systemOS = systemOS;
     }
 }

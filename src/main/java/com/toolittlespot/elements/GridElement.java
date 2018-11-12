@@ -5,7 +5,7 @@ import main.java.com.toolittlespot.language.LangMap;
 import javafx.geometry.HPos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
-import main.java.com.toolittlespot.Constants;
+import main.java.com.toolittlespot.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
