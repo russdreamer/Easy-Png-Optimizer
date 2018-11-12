@@ -1,5 +1,6 @@
 package main.java.com.toolittlespot.utils;
 
+import com.apple.eawt.Application;
 import main.java.com.toolittlespot.controller.Main;
 import main.java.com.toolittlespot.elements.ApplicationArea;
 import main.java.com.toolittlespot.elements.FileElement;
@@ -131,6 +132,17 @@ public class AppUtils {
             return SystemOS.UNIX;
         }
         return SystemOS.OTHER;
+    }
+
+    public static void setAppIcon(){
+        InputStream is = ClassLoader.getSystemResourceAsStream("resources/images/icon.png");
+        java.awt.Image image = null;
+        try {
+            image = ImageIO.read(is);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Application.getApplication().setDockIconImage(image);
     }
 
     private static void makeFileExecutable(File file) {

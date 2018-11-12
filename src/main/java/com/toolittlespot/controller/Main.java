@@ -13,6 +13,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import main.java.com.toolittlespot.utils.AppUtils;
+import main.java.com.toolittlespot.utils.SystemOS;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -42,6 +43,9 @@ public class Main extends Application {
         ApplicationArea application = new ApplicationArea(this);
 
         application.setSystemOS(AppUtils.getSystemOS());
+        if (application.getSystemOS() == SystemOS.MAC) {
+            AppUtils.setAppIcon();
+        }
 
         application.userLanguage = language;
         application.setTopPanel(new StackPane());
