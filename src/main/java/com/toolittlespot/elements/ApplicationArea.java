@@ -26,6 +26,7 @@ public class ApplicationArea {
     private DraggableElement draggableBox;
     private ButtonGroupElement buttons;
     private MenuButtonElement languageButton;
+    private MenuBarElement menuBar;
 
     /* engine side */
     private SystemOS systemOS;
@@ -97,7 +98,7 @@ public class ApplicationArea {
         ScrollPane scrollPanel = new ScrollPane();
         scrollPanel.setContent(grid.getGrid());
         scrollPanel.setFitToWidth(true);
-        topPanel.getChildren().addAll(scrollPanel, draggableBox.getDraggableField());
+        topPanel.getChildren().addAll(scrollPanel, draggableBox.getDraggableField(), menuBar.getMenuBar());
         bottomPanel.getChildren().addAll(buttons.getButtons(), languageButton.getMenuButton());
         root.setTop(topPanel);
         root.setBottom(bottomPanel);
@@ -161,5 +162,9 @@ public class ApplicationArea {
 
     public void setSystemOS(SystemOS systemOS) {
         this.systemOS = systemOS;
+    }
+
+    public void setMenuBar(MenuBarElement menuBar) {
+        this.menuBar = menuBar;
     }
 }

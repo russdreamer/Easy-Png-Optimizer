@@ -85,6 +85,22 @@ public enum Dict {
             "Отмена",
             "Cancel"
     ),
+    HELP_MENU_ITEM(
+            "Помощь",
+            "Help"
+    ),
+    ABOUT_MENU_ITEM(
+            "Об Easy Png",
+            "About Easy Png"
+    ),
+    AUTHOR(
+            "Автор",
+            "Author"
+    ),
+    APPLICATION_VERSION(
+            "Версия приложения",
+            "Application version"
+    ),
     ;
 
 

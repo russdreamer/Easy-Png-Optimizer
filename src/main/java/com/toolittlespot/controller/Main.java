@@ -65,6 +65,8 @@ public class Main extends Application {
         MenuButtonElement languageButton = new MenuButtonElement(new MenuButton(), application);
         application.setLanguageButton(languageButton);
 
+        application.setMenuBar(new MenuBarElement());
+
         /* get all necessary nodes for events setting */
         VBox dragTarget = dragElement.getDraggableField();
         Button convertButton = buttons.getCompress();
