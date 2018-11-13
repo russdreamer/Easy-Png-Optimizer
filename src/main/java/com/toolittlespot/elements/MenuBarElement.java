@@ -29,8 +29,8 @@ public class MenuBarElement {
     }
 
     private String getAboutItemContext() {
-        String author = "Author"+ ": Igor Kovtun";
-        String version = "Application version" + ": 1.0";
+        String author = LangMap.getDict(Dict.AUTHOR) + ": Igor Kovtun";
+        String version = LangMap.getDict(Dict.APPLICATION_VERSION) + ": 1.0";
         // TODO: 13/11/2018 write website page and make it a link
         String website = "Website link" + ": linkedIn or something";
 
