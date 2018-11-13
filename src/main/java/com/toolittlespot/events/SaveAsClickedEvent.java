@@ -6,7 +6,6 @@ import main.java.com.toolittlespot.elements.FileElement;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
-//import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +19,6 @@ import static main.java.com.toolittlespot.utils.Constants.DEFAULT_FILE_PATH;
 
 public class SaveAsClickedEvent implements EventHandler<MouseEvent> {
     private final ApplicationArea application;
-    //private final Logger LOGGER = Logger.getLogger(SaveAsClickedEvent.class);
 
     public SaveAsClickedEvent(ApplicationArea application) {
         this.application = application;
@@ -33,14 +31,14 @@ public class SaveAsClickedEvent implements EventHandler<MouseEvent> {
         application.getLanguageButton().getMenuButton().setDisable(true);
 
         DirectoryChooser directoryChooser = new DirectoryChooser();
-        /* can be fatal errors due to JDK bug https://bugs.openjdk.java.net/browse/JDK-8211137 */
+
         File dir = directoryChooser.showDialog(application.getScene().getWindow());
         if (dir != null){
             try {
                 saveFilesToDir(application.getConvertedFiles(), dir);
                 AppUtils.showSavedAllert();
             } catch (IOException e) {
-               // LOGGER.error("wrong destination path: " + dir.toPath());
+                e.printStackTrace();
             }
         }
         application.getDraggableBox().enableDraggable();

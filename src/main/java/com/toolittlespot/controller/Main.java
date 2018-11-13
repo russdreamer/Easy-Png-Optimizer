@@ -46,6 +46,7 @@ public class Main extends Application {
         if (application.getSystemOS() == SystemOS.MAC) {
             AppUtils.setAppIcon();
         }
+        AppUtils.createTempFiles();
 
         application.userLanguage = language;
         application.setTopPanel(new StackPane());

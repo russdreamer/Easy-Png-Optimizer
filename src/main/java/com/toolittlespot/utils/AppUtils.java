@@ -12,6 +12,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 
 import javax.imageio.ImageIO;
+import javax.management.RuntimeErrorException;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -23,6 +24,9 @@ import java.util.List;
 
 public class AppUtils {
     private static Path logFile;
+
+    public static String defaultFilePath;
+    public static String compressorPath;
 
     public static boolean downloadFiles(List<File> files, ApplicationArea application){
         boolean isCorrect = false;
@@ -81,7 +85,6 @@ public class AppUtils {
         alert.setHeaderText(LangMap.getDict(Dict.SAVE_ALERT_HEADER));
         alert.setContentText(LangMap.getDict(Dict.SAVE_ALERT_CONTEXT));
 
-        /* might be better to use .show() due to jdk bug https://bugs.openjdk.java.net/browse/JDK-8211137 */
         alert.showAndWait();
     }
 
@@ -99,16 +102,20 @@ public class AppUtils {
 
     public static String createTempCompressorFile(){
         /* get compressor from source and copy to temp dir */
+        String compressor = getCompressorName();
+        if (compressor == null){
+            throw new RuntimeErrorException(new Error(), "This application can be run on MacOS and Windows only");
+        }
         try {
             InputStream inputStream = ClassLoader
-                    .getSystemResourceAsStream("main/java/com/toolittlespot/compressor/pngquant");
+                    .getSystemResourceAsStream("main/java/com/toolittlespot/compressor/" + compressor);
             Files.copy(
                     inputStream,
-                    Paths.get(System.getProperty("java.io.tmpdir") + "easyPng/pngquant"),
+                    Paths.get(System.getProperty("java.io.tmpdir") + "easyPng/" + compressor),
                     StandardCopyOption.REPLACE_EXISTING
             );
 
-            File file = new File(System.getProperty("java.io.tmpdir") + "easyPng/pngquant");
+            File file = new File(System.getProperty("java.io.tmpdir") + "easyPng/" + compressor);
             file.deleteOnExit();
             makeFileExecutable(file);
             inputStream.close();
@@ -120,15 +127,26 @@ public class AppUtils {
         }
     }
 
+    private static String getCompressorName() {
+        SystemOS currentOS = getSystemOS();
+        if ( currentOS == SystemOS.WINDOWS ){
+            return "pngquant_win.exe";
+        }
+        else if (currentOS == SystemOS.MAC) {
+            return "pngquant_mac";
+        }
+        else return null;
+    }
+
     public static SystemOS getSystemOS(){
         String OS = System.getProperty("os.name").toLowerCase();
-        if (OS.indexOf("win") >= 0){
+        if (OS.contains("win")){
             return SystemOS.WINDOWS;
         }
-        else if (OS.indexOf("mac") >= 0){
+        else if (OS.contains("mac")){
             return SystemOS.MAC;
         }
-        else if (OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0){
+        else if (OS.contains("nix") || OS.contains("nux") || OS.indexOf("aix") > 0){
             return SystemOS.UNIX;
         }
         return SystemOS.OTHER;
@@ -145,14 +163,17 @@ public class AppUtils {
         Application.getApplication().setDockIconImage(image);
     }
 
+    public static void createTempFiles() {
+        defaultFilePath = createTempDir();
+        compressorPath = createTempCompressorFile();
+    }
+
     private static void makeFileExecutable(File file) {
         String[] processCommand = {"chmod", "+x", file.getAbsolutePath()};
         try {
             Process process = Runtime.getRuntime().exec(processCommand);
             process.waitFor();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }
