@@ -101,6 +101,26 @@ public enum Dict {
             "Версия приложения",
             "Application version"
     ),
+    UPDATE_MENU_ITEM(
+            "Обновить",
+            "Update"
+    ),
+    CLOSE_BUTTON(
+            "Закрыть",
+            "Close"
+    ),
+    YOU_USE_LAST_VERSION(
+            "Вы используете самую свежую версию «Easy Png»",
+            "You are using the latest version of «Easy Png»"
+    ),
+    PATCH_NOTE_FILE(
+            "patchNote_russian",
+            "patchNote_english"
+    ),
+    GET_PATCH_NOTE_ERROR(
+            "Не удалось получить описание обновления. Сервис временно недоступен",
+            "Failed to get update description. Service is temporarily unavailable"
+    ),
     ;
 
 

@@ -11,6 +11,12 @@ import main.java.com.toolittlespot.language.LangMap;
 import main.java.com.toolittlespot.utils.AppUtils;
 import main.java.com.toolittlespot.utils.SystemOS;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 public class MenuBarElement {
     private MenuBar menuBar;
     Main main;
@@ -26,15 +32,65 @@ public class MenuBarElement {
     }
 
     private MenuItem createUpdateItem() {
-        MenuItem update = new MenuItem("Обновить");
+        MenuItem update = new MenuItem(LangMap.getDict(Dict.UPDATE_MENU_ITEM));
         update.setOnAction(e->{
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle(LangMap.getDict(Dict.ABOUT_MENU_ITEM));
+            Alert alert = new Alert(Alert.AlertType.NONE);
+            alert.setTitle(LangMap.getDict(Dict.UPDATE_MENU_ITEM));
             alert.setHeaderText(null);
-            alert.setContentText("!!!!!");
+            ButtonType updateButton = new ButtonType(LangMap.getDict(Dict.UPDATE_MENU_ITEM));
+            ButtonType close = new ButtonType(LangMap.getDict(Dict.CLOSE_BUTTON));
+
+            String content;
+            if (isCurrentVersionLast()){
+                content = LangMap.getDict(Dict.YOU_USE_LAST_VERSION);
+            }
+            else {
+                content = getUpdateContent();
+                alert.getButtonTypes().add(updateButton);
+            }
+
+            alert.getButtonTypes().add(close);
+            alert.setContentText(content);
             alert.show();
         });
         return update;
+    }
+
+    private String getUpdateContent() {
+        String patchNotePath = "https://raw.githubusercontent.com/russdreamer/Easy-Png-Optimizer/master/src/" +
+                LangMap.getDict(Dict.PATCH_NOTE_FILE);
+        try {
+            URL url = new URL(patchNotePath);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder builder = new StringBuilder();
+            String result;
+            while ((result = reader.readLine()) != null) {
+                builder.append(result);
+            }
+            reader.close();
+            return builder.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return LangMap.getDict(Dict.GET_PATCH_NOTE_ERROR);
+    }
+
+    private boolean isCurrentVersionLast() {
+        String lastVersionPath = "https://raw.githubusercontent.com/russdreamer/Easy-Png-Optimizer/master/src/version";
+        try {
+            URL url = new URL(lastVersionPath);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String lastVersion = reader.readLine();
+            reader.close();
+            return AppUtils.getAppVersion().equals(lastVersion);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 
     private Menu createHelpMenu() {
