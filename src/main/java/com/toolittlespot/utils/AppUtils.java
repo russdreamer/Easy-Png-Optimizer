@@ -168,6 +168,15 @@ public class AppUtils {
         compressorPath = createTempCompressorFile();
     }
 
+    public static String getAppVersion() {
+        try(BufferedReader reader = new BufferedReader(new FileReader(AppUtils.getAppLocation() + "/version"))){
+            return reader.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "--";
+    }
+
     private static void makeFileExecutable(File file) {
         String[] processCommand = {"chmod", "+x", file.getAbsolutePath()};
         try {

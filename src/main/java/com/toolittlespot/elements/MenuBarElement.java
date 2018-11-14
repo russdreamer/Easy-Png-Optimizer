@@ -1,26 +1,32 @@
 package main.java.com.toolittlespot.elements;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
+import javafx.scene.web.WebView;
+import main.java.com.toolittlespot.controller.Main;
 import main.java.com.toolittlespot.language.Dict;
 import main.java.com.toolittlespot.language.LangMap;
+import main.java.com.toolittlespot.utils.AppUtils;
 
 public class MenuBarElement {
     private MenuBar menuBar;
-    private Menu help;
-    private MenuItem about;
+    Main main;
 
     {
         menuBar = new MenuBar();
-        help = new Menu(LangMap.getDict(Dict.HELP_MENU_ITEM));
-        about = new MenuItem(LangMap.getDict(Dict.ABOUT_MENU_ITEM));
+        Menu help = new Menu(LangMap.getDict(Dict.HELP_MENU_ITEM));
+        MenuItem about = new MenuItem(LangMap.getDict(Dict.ABOUT_MENU_ITEM));
         about.setOnAction(e -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle(LangMap.getDict(Dict.ABOUT_MENU_ITEM));
             alert.setHeaderText(null);
-            alert.setContentText(getAboutItemContext());
+            alert.getDialogPane().setContent(getAboutItemContext());
             alert.show();
         });
         help.getItems().add(about);
@@ -28,13 +34,24 @@ public class MenuBarElement {
         menuBar.setUseSystemMenuBar(true);
     }
 
-    private String getAboutItemContext() {
-        String author = LangMap.getDict(Dict.AUTHOR) + ": Igor Kovtun";
-        String version = LangMap.getDict(Dict.APPLICATION_VERSION) + ": 1.0";
-        // TODO: 13/11/2018 write website page and make it a link
-        String website = "Website link" + ": linkedIn or something";
+    public MenuBarElement(Main main) {
+        this.main = main;
+    }
 
-        return version + "\n" + author + "\n" + website;
+    private Pane getAboutItemContext() {
+        Text version = new Text(LangMap.getDict(Dict.APPLICATION_VERSION) + ": " + AppUtils.getAppVersion());
+        Text author = new Text(LangMap.getDict(Dict.AUTHOR) + ": Igor Kovtun");
+
+        Hyperlink facebook = new Hyperlink("facebook");
+        facebook.setOnAction((e)->main.getHostServices().showDocument("https://www.facebook.com/Russian.troll"));
+
+        Hyperlink email = new Hyperlink("e-mail");
+        email.setOnAction((e)->main.getHostServices().showDocument("mailto:russdreamer@gmail.com"));
+
+        Hyperlink git = new Hyperlink("git");
+        git.setOnAction((e)->main.getHostServices().showDocument("https://github.com/russdreamer"));
+
+        return new VBox(version, author, new HBox(facebook, email, git));
     }
 
     public MenuBar getMenuBar() {
