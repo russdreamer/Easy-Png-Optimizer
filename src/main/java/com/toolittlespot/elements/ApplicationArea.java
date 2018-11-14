@@ -19,7 +19,8 @@ public class ApplicationArea {
     /* UI */
     private Main mainController;
     private Scene scene;
-    private StackPane topPanel;
+    private StackPane filesPanel;
+    private BorderPane topPanel;
     private StackPane bottomPanel;
     private BorderPane root;
     private GridElement grid;
@@ -49,12 +50,12 @@ public class ApplicationArea {
     }
 
 
-    public StackPane getTopPanel() {
-        return topPanel;
+    public StackPane getFilesPanel() {
+        return filesPanel;
     }
 
-    public void setTopPanel(StackPane topPanel) {
-        this.topPanel = topPanel;
+    public void setFilesPanel(StackPane filesPanel) {
+        this.filesPanel = filesPanel;
     }
 
     public GridElement getGrid() {
@@ -98,8 +99,13 @@ public class ApplicationArea {
         ScrollPane scrollPanel = new ScrollPane();
         scrollPanel.setContent(grid.getGrid());
         scrollPanel.setFitToWidth(true);
-        topPanel.getChildren().addAll(scrollPanel, draggableBox.getDraggableField(), menuBar.getMenuBar());
+        filesPanel.getChildren().addAll( scrollPanel, draggableBox.getDraggableField());
         bottomPanel.getChildren().addAll(buttons.getButtons(), languageButton.getMenuButton());
+
+        topPanel = new BorderPane();
+        topPanel.setTop(menuBar.getMenuBar());
+        topPanel.setBottom(filesPanel);
+
         root.setTop(topPanel);
         root.setBottom(bottomPanel);
         scene = new Scene(root, Constants.SCENE_WIDTH, Constants.SCENE_HEIGHT);
@@ -146,9 +152,9 @@ public class ApplicationArea {
 
     public void configurateLayouts() {
         double buttonsHeight = buttons.getCompress().getHeight();
-        this.topPanel.setPrefHeight(Constants.SCENE_HEIGHT - buttonsHeight);
+        double menuHeight = menuBar.getMenuBar().getHeight();
+        this.filesPanel.setPrefHeight(Constants.SCENE_HEIGHT - buttonsHeight - menuHeight);
 
-        /* app buttons positions */
         buttons.setAlignment();
     }
 

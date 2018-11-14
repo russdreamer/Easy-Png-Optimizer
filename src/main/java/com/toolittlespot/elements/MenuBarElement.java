@@ -1,18 +1,15 @@
 package main.java.com.toolittlespot.elements;
 
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
-import javafx.scene.web.WebView;
 import main.java.com.toolittlespot.controller.Main;
 import main.java.com.toolittlespot.language.Dict;
 import main.java.com.toolittlespot.language.LangMap;
 import main.java.com.toolittlespot.utils.AppUtils;
+import main.java.com.toolittlespot.utils.SystemOS;
 
 public class MenuBarElement {
     private MenuBar menuBar;
@@ -31,7 +28,10 @@ public class MenuBarElement {
         });
         help.getItems().add(about);
         menuBar.getMenus().add(help);
-        menuBar.setUseSystemMenuBar(true);
+
+        if (AppUtils.getSystemOS() == SystemOS.MAC){
+            menuBar.setUseSystemMenuBar(true);
+        }
     }
 
     public MenuBarElement(Main main) {

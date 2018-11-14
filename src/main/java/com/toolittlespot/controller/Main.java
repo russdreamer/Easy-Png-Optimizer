@@ -39,7 +39,7 @@ public class Main extends Application {
         AppUtils.createTempFiles();
 
         application.userLanguage = language;
-        application.setTopPanel(new StackPane());
+        application.setFilesPanel(new StackPane());
         application.setBottomPanel(new StackPane());
 
         GridElement gridElement = new GridElement(4);
