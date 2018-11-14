@@ -88,7 +88,7 @@ public class AppUtils {
         alert.showAndWait();
     }
 
-    public static String createTempDir() {
+    static String createTempDir() {
         try {
             File file = new File(Files.createDirectories(
                     Paths.get(System.getProperty("java.io.tmpdir") + "easyPng/converted_files")).toUri());
@@ -100,7 +100,7 @@ public class AppUtils {
         }
     }
 
-    public static String createTempCompressorFile(){
+    static String createTempCompressorFile(){
         /* get compressor from source and copy to temp dir */
         String compressor = getCompressorName();
         if (compressor == null){
@@ -169,7 +169,10 @@ public class AppUtils {
     }
 
     public static String getAppVersion() {
-        try(BufferedReader reader = new BufferedReader(new FileReader(AppUtils.getAppLocation() + "/version"))){
+        try(
+                InputStream is = ClassLoader.getSystemResourceAsStream("version");
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is))
+                ){
             return reader.readLine();
         } catch (IOException e) {
             e.printStackTrace();

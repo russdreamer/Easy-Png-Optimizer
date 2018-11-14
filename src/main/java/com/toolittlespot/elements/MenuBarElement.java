@@ -17,7 +17,35 @@ public class MenuBarElement {
 
     {
         menuBar = new MenuBar();
+        Menu help = createHelpMenu();
+        menuBar.getMenus().addAll(help);
+
+        if (AppUtils.getSystemOS() == SystemOS.MAC){
+            menuBar.setUseSystemMenuBar(true);
+        }
+    }
+
+    private MenuItem createUpdateItem() {
+        MenuItem update = new MenuItem("Обновить");
+        update.setOnAction(e->{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(LangMap.getDict(Dict.ABOUT_MENU_ITEM));
+            alert.setHeaderText(null);
+            alert.setContentText("!!!!!");
+            alert.show();
+        });
+        return update;
+    }
+
+    private Menu createHelpMenu() {
         Menu help = new Menu(LangMap.getDict(Dict.HELP_MENU_ITEM));
+        MenuItem about = createAboutItem();
+        MenuItem update = createUpdateItem();
+        help.getItems().addAll(about, update);
+        return help;
+    }
+
+    private MenuItem createAboutItem() {
         MenuItem about = new MenuItem(LangMap.getDict(Dict.ABOUT_MENU_ITEM));
         about.setOnAction(e -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -26,12 +54,7 @@ public class MenuBarElement {
             alert.getDialogPane().setContent(getAboutItemContext());
             alert.show();
         });
-        help.getItems().add(about);
-        menuBar.getMenus().add(help);
-
-        if (AppUtils.getSystemOS() == SystemOS.MAC){
-            menuBar.setUseSystemMenuBar(true);
-        }
+        return about;
     }
 
     public MenuBarElement(Main main) {
@@ -43,13 +66,13 @@ public class MenuBarElement {
         Text author = new Text(LangMap.getDict(Dict.AUTHOR) + ": Igor Kovtun");
 
         Hyperlink facebook = new Hyperlink("facebook");
-        facebook.setOnAction((e)->main.getHostServices().showDocument("https://www.facebook.com/Russian.troll"));
+        facebook.setOnAction(e -> main.getHostServices().showDocument("https://www.facebook.com/Russian.troll"));
 
         Hyperlink email = new Hyperlink("e-mail");
-        email.setOnAction((e)->main.getHostServices().showDocument("mailto:russdreamer@gmail.com"));
+        email.setOnAction(e -> main.getHostServices().showDocument("mailto:russdreamer@gmail.com"));
 
         Hyperlink git = new Hyperlink("git");
-        git.setOnAction((e)->main.getHostServices().showDocument("https://github.com/russdreamer"));
+        git.setOnAction(e -> main.getHostServices().showDocument("https://github.com/russdreamer"));
 
         return new VBox(version, author, new HBox(facebook, email, git));
     }
