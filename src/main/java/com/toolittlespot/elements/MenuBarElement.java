@@ -67,7 +67,7 @@ public class MenuBarElement {
             StringBuilder builder = new StringBuilder();
             String result;
             while ((result = reader.readLine()) != null) {
-                builder.append(result);
+                builder.append(result + "\n");
             }
             reader.close();
             return builder.toString();
