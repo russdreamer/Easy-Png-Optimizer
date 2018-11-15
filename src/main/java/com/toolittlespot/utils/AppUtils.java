@@ -14,7 +14,9 @@ import javafx.scene.control.Label;
 import javax.imageio.ImageIO;
 import javax.management.RuntimeErrorException;
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -24,6 +26,8 @@ import java.util.List;
 public class AppUtils {
     private static String currentAppVerNum;
     private static String currentAppVerName;
+    private static String lastAppVerNum;
+    private static String lastAppVerLink;
 
     public static boolean downloadFiles(List<File> files, ApplicationArea application){
         boolean isCorrect = false;
@@ -167,19 +171,19 @@ public class AppUtils {
 
     public static String getAppVersionName() {
         if (AppUtils.currentAppVerName == null){
-            setAppVersion();
+            extractAppVersion();
         }
        return AppUtils.currentAppVerName;
     }
 
     public static String getAppVersionNum() {
         if (AppUtils.currentAppVerNum == null){
-            setAppVersion();
+            extractAppVersion();
         }
         return AppUtils.currentAppVerNum;
     }
 
-    private static void setAppVersion() {
+    private static void extractAppVersion() {
         try(
             InputStream is = ClassLoader.getSystemResourceAsStream("version");
             BufferedReader reader = new BufferedReader(new InputStreamReader(is))
@@ -222,5 +226,75 @@ public class AppUtils {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.show();
+    }
+
+    public static String getLastAppVerNum() {
+        if (AppUtils.lastAppVerNum == null){
+            extractLastVersion();
+        }
+        return AppUtils.lastAppVerNum;
+    }
+
+    public static String getLastAppVerLink() {
+        if (AppUtils.lastAppVerLink == null){
+            extractLastVersion();
+        }
+        return AppUtils.lastAppVerLink;
+    }
+
+    private static void extractLastVersion () {
+        String lastVersionPath = "https://raw.githubusercontent.com/russdreamer/Easy-Png-Optimizer/master/src/new_version_links";
+        try {
+            URL url = new URL(lastVersionPath);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String result;
+            while ((result = reader.readLine()) != null) {
+                String[] line = result.split(" ");
+                if (AppUtils.getAppVersionName().equals(line[0])){
+                    AppUtils.lastAppVerNum = line[1];
+                    AppUtils.lastAppVerLink = line[2];
+                    reader.close();
+                    return;
+                }
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String getPatchContent() {
+        if (AppUtils.lastAppVerNum == null){
+            return  LangMap.getDict(Dict.GET_PATCH_NOTE_ERROR);
+        }
+
+        String patchNotePath = "https://raw.githubusercontent.com/russdreamer/Easy-Png-Optimizer/master/src/" +
+                LangMap.getDict(Dict.PATCH_NOTE_FILE);
+        try {
+            URL url = new URL(patchNotePath);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder builder = new StringBuilder();
+            String result;
+            builder.append("New version «Easy Png» ").
+                    append(AppUtils.lastAppVerNum).
+                    append("\n");
+            while ((result = reader.readLine()) != null) {
+                builder.append(result).
+                        append("\n");
+            }
+            reader.close();
+            return builder.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return LangMap.getDict(Dict.GET_PATCH_NOTE_ERROR);
+    }
+
+    public static boolean isCurrentVersionLast() {
+        return AppUtils.getAppVersionNum().equals(AppUtils.getLastAppVerNum());
     }
 }

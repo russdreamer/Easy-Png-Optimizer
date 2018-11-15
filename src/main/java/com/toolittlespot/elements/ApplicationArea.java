@@ -173,4 +173,8 @@ public class ApplicationArea {
     public void setMenuBar(MenuBarElement menuBar) {
         this.menuBar = menuBar;
     }
+
+    public MenuBarElement getMenuBar() {
+        return menuBar;
+    }
 }

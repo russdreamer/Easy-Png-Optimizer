@@ -82,6 +82,10 @@ public class Main extends Application {
         primaryStage.setResizable(false);
         primaryStage.show();
         application.configurateLayouts();
+
+        if (! AppUtils.isCurrentVersionLast()){
+            application.getMenuBar().getUpdate().fire();
+        }
     }
 
     /**
