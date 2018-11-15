@@ -51,9 +51,40 @@ public class MenuBarElement {
 
             alert.getButtonTypes().add(close);
             alert.setContentText(content);
-            alert.show();
+            alert.showAndWait();
+            if (alert.getResult() == updateButton) {
+                openDownloadPage();
+            }
         });
         return update;
+    }
+
+    private void openDownloadPage() {
+        String patchNotePath = "https://raw.githubusercontent.com/russdreamer/Easy-Png-Optimizer/master/src/new_version_links";
+        String currVer = AppUtils.getAppVersionName();
+        if (currVer == null){
+            AppUtils.showErrorAllert(LangMap.getDict(Dict.GET_UPDATE_ERROR));
+            return;
+        }
+        try {
+            URL url = new URL(patchNotePath);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String result;
+            while ((result = reader.readLine()) != null) {
+                String[] line = result.split(" ");
+                if (currVer.equals(line[0])){
+                    main.getHostServices().showDocument(line[2]);
+                    reader.close();
+                    return;
+                }
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        AppUtils.showErrorAllert(LangMap.getDict(Dict.GET_UPDATE_ERROR));
     }
 
     private String getUpdateContent() {
@@ -67,7 +98,8 @@ public class MenuBarElement {
             StringBuilder builder = new StringBuilder();
             String result;
             while ((result = reader.readLine()) != null) {
-                builder.append(result + "\n");
+                builder.append(result);
+                builder.append("\n");
             }
             reader.close();
             return builder.toString();
@@ -79,16 +111,33 @@ public class MenuBarElement {
 
     private boolean isCurrentVersionLast() {
         String lastVersionPath = "https://raw.githubusercontent.com/russdreamer/Easy-Png-Optimizer/master/src/version";
+        String currVerName = AppUtils.getAppVersionName();
+        String currVerNum = AppUtils.getAppVersionNum();
+        if (currVerName == null || currVerNum == null){
+            return true;
+        }
+        BufferedReader reader = null;
         try {
             URL url = new URL(lastVersionPath);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String lastVersion = reader.readLine();
-            reader.close();
-            return AppUtils.getAppVersion().equals(lastVersion);
+            reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String result;
+            while ((result = reader.readLine()) != null) {
+                String[] line = result.split(" ");
+                if (currVerName.equals(line[0])){
+                    return currVerNum.equals(line[1]);
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        finally {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return true;
     }
@@ -118,7 +167,9 @@ public class MenuBarElement {
     }
 
     private Pane getAboutItemContext() {
-        Text version = new Text(LangMap.getDict(Dict.APPLICATION_VERSION) + ": " + AppUtils.getAppVersion());
+        String appVersion = AppUtils.getAppVersionNum();
+        appVersion = appVersion != null ? appVersion : "--";
+        Text version = new Text(LangMap.getDict(Dict.APPLICATION_VERSION) + ": " + appVersion);
         Text author = new Text(LangMap.getDict(Dict.AUTHOR) + ": Igor Kovtun");
 
         Hyperlink facebook = new Hyperlink("facebook");

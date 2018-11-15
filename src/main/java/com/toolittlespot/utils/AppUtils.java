@@ -168,16 +168,32 @@ public class AppUtils {
         compressorPath = createTempCompressorFile();
     }
 
-    public static String getAppVersion() {
+    public static String getAppVersionName() {
+        String appVersion = getAppVersion();
+        if (appVersion != null) {
+            return appVersion.split(" ")[0];
+        }
+        return null;
+    }
+
+    public static String getAppVersionNum() {
+        String appVersion = getAppVersion();
+        if (appVersion != null) {
+            return appVersion.split(" ")[1];
+        }
+        return null;
+    }
+
+    private static String getAppVersion() {
         try(
                 InputStream is = ClassLoader.getSystemResourceAsStream("version");
                 BufferedReader reader = new BufferedReader(new InputStreamReader(is))
-                ){
+        ){
             return reader.readLine();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "--";
+        return null;
     }
 
     private static void makeFileExecutable(File file) {
@@ -203,5 +219,12 @@ public class AppUtils {
         String extension = getExtension(file.getName());
         return "png".equals(extension);
 
+    }
+
+    public static void showErrorAllert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.show();
     }
 }

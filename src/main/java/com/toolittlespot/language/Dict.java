@@ -114,12 +114,16 @@ public enum Dict {
             "You are using the latest version of «Easy Png»"
     ),
     PATCH_NOTE_FILE(
-            "patchNote_russian",
-            "patchNote_english"
+            "patch_note_russian",
+            "patch_note_english"
     ),
     GET_PATCH_NOTE_ERROR(
             "Не удалось получить описание обновления. Сервис временно недоступен",
             "Failed to get update description. Service is temporarily unavailable"
+    ),
+    GET_UPDATE_ERROR(
+            "Не удалось обновиться. Сервис временно недоступен",
+            "Failed to upgrade. Service is temporarily unavailable"
     ),
     ;
 
