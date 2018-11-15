@@ -16,17 +16,14 @@ import javax.management.RuntimeErrorException;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AppUtils {
-    private static Path logFile;
-
-    public static String defaultFilePath;
-    public static String compressorPath;
+    private static String currentAppVerNum;
+    private static String currentAppVerName;
 
     public static boolean downloadFiles(List<File> files, ApplicationArea application){
         boolean isCorrect = false;
@@ -164,36 +161,35 @@ public class AppUtils {
     }
 
     public static void createTempFiles() {
-        defaultFilePath = createTempDir();
-        compressorPath = createTempCompressorFile();
+        String defaultFilePath = createTempDir();
+        String compressorPath = createTempCompressorFile();
     }
 
     public static String getAppVersionName() {
-        String appVersion = getAppVersion();
-        if (appVersion != null) {
-            return appVersion.split(" ")[0];
+        if (AppUtils.currentAppVerName == null){
+            setAppVersion();
         }
-        return null;
+       return AppUtils.currentAppVerName;
     }
 
     public static String getAppVersionNum() {
-        String appVersion = getAppVersion();
-        if (appVersion != null) {
-            return appVersion.split(" ")[1];
+        if (AppUtils.currentAppVerNum == null){
+            setAppVersion();
         }
-        return null;
+        return AppUtils.currentAppVerNum;
     }
 
-    private static String getAppVersion() {
+    private static void setAppVersion() {
         try(
-                InputStream is = ClassLoader.getSystemResourceAsStream("version");
-                BufferedReader reader = new BufferedReader(new InputStreamReader(is))
+            InputStream is = ClassLoader.getSystemResourceAsStream("version");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is))
         ){
-            return reader.readLine();
+            String[] line = reader.readLine().split(" ");
+            AppUtils.currentAppVerName = line[0];
+            AppUtils.currentAppVerNum = line[1];
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
     }
 
     private static void makeFileExecutable(File file) {

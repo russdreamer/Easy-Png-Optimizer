@@ -19,7 +19,10 @@ import java.net.URL;
 
 public class MenuBarElement {
     private MenuBar menuBar;
-    Main main;
+    private Main main;
+    private String lastAppVersion;
+    private String lastAppLink;
+
 
     {
         menuBar = new MenuBar();
@@ -34,6 +37,7 @@ public class MenuBarElement {
     private MenuItem createUpdateItem() {
         MenuItem update = new MenuItem(LangMap.getDict(Dict.UPDATE_MENU_ITEM));
         update.setOnAction(e->{
+            extractLastVersion();
             Alert alert = new Alert(Alert.AlertType.NONE);
             alert.setTitle(LangMap.getDict(Dict.UPDATE_MENU_ITEM));
             alert.setHeaderText(null);
@@ -59,23 +63,19 @@ public class MenuBarElement {
         return update;
     }
 
-    private void openDownloadPage() {
-        String patchNotePath = "https://raw.githubusercontent.com/russdreamer/Easy-Png-Optimizer/master/src/new_version_links";
-        String currVer = AppUtils.getAppVersionName();
-        if (currVer == null){
-            AppUtils.showErrorAllert(LangMap.getDict(Dict.GET_UPDATE_ERROR));
-            return;
-        }
+    private void extractLastVersion() {
+        String lastVersionPath = "https://raw.githubusercontent.com/russdreamer/Easy-Png-Optimizer/master/src/new_version_links";
         try {
-            URL url = new URL(patchNotePath);
+            URL url = new URL(lastVersionPath);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String result;
             while ((result = reader.readLine()) != null) {
                 String[] line = result.split(" ");
-                if (currVer.equals(line[0])){
-                    main.getHostServices().showDocument(line[2]);
+                if (AppUtils.getAppVersionName().equals(line[0])){
+                    this.lastAppVersion = line[1];
+                    this.lastAppLink = line[2];
                     reader.close();
                     return;
                 }
@@ -84,10 +84,20 @@ public class MenuBarElement {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        AppUtils.showErrorAllert(LangMap.getDict(Dict.GET_UPDATE_ERROR));
+    }
+
+    private void openDownloadPage() {
+        if (lastAppLink == null) {
+            AppUtils.showErrorAllert(LangMap.getDict(Dict.GET_UPDATE_ERROR));
+        }
+        else main.getHostServices().showDocument(lastAppLink);
     }
 
     private String getUpdateContent() {
+        if (this.lastAppVersion == null){
+            return  LangMap.getDict(Dict.GET_PATCH_NOTE_ERROR);
+        }
+
         String patchNotePath = "https://raw.githubusercontent.com/russdreamer/Easy-Png-Optimizer/master/src/" +
                 LangMap.getDict(Dict.PATCH_NOTE_FILE);
         try {
@@ -97,9 +107,12 @@ public class MenuBarElement {
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder builder = new StringBuilder();
             String result;
+            builder.append("New version «Easy Png» ").
+                    append(lastAppVersion).
+                    append("\n");
             while ((result = reader.readLine()) != null) {
-                builder.append(result);
-                builder.append("\n");
+                builder.append(result).
+                        append("\n");
             }
             reader.close();
             return builder.toString();
@@ -110,36 +123,7 @@ public class MenuBarElement {
     }
 
     private boolean isCurrentVersionLast() {
-        String lastVersionPath = "https://raw.githubusercontent.com/russdreamer/Easy-Png-Optimizer/master/src/version";
-        String currVerName = AppUtils.getAppVersionName();
-        String currVerNum = AppUtils.getAppVersionNum();
-        if (currVerName == null || currVerNum == null){
-            return true;
-        }
-        BufferedReader reader = null;
-        try {
-            URL url = new URL(lastVersionPath);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String result;
-            while ((result = reader.readLine()) != null) {
-                String[] line = result.split(" ");
-                if (currVerName.equals(line[0])){
-                    return currVerNum.equals(line[1]);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        finally {
-            try {
-                reader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return true;
+        return AppUtils.getAppVersionNum().equals(lastAppVersion);
     }
 
     private Menu createHelpMenu() {
