@@ -1,9 +1,12 @@
 package main.java.com.toolittlespot.language;
 
 import main.java.com.toolittlespot.elements.ApplicationArea;
+import main.java.com.toolittlespot.utils.AppUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static main.java.com.toolittlespot.utils.Constants.USER_LANGUAGE;
 
 public class LangMap {
     private static Map<String, String> englishDict = new HashMap<>();
@@ -30,6 +33,7 @@ public class LangMap {
             case "Russian": currentDict = russianDict; break;
             default: currentDict = englishDict; break;
         }
+        AppUtils.userState.put(USER_LANGUAGE, language);
     }
 
     private static void determinateUserLanguage() {

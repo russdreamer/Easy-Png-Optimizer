@@ -11,7 +11,7 @@ import main.java.com.toolittlespot.events.*;
 import main.java.com.toolittlespot.utils.AppUtils;
 import main.java.com.toolittlespot.utils.SystemOS;
 
-import java.util.Locale;
+import static main.java.com.toolittlespot.utils.Constants.USER_LANGUAGE;
 
 
 public class Main extends Application {
@@ -20,9 +20,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        AppUtils.loadStateFile();
         this.primaryStage = primaryStage;
-        String language = Locale.getDefault().getDisplayLanguage();
-        createApplication(primaryStage, language);
+        createApplication(primaryStage, AppUtils.userState.get(USER_LANGUAGE));
     }
 
     public void restart(String language) {
@@ -38,7 +38,7 @@ public class Main extends Application {
         }
         AppUtils.createTempFiles();
 
-        application.userLanguage = language;
+        ApplicationArea.userLanguage = language;
         application.setFilesPanel(new StackPane());
         application.setBottomPanel(new StackPane());
 
@@ -80,12 +80,12 @@ public class Main extends Application {
         primaryStage.setTitle("EASY.png");
         primaryStage.setScene(application.getScene());
         primaryStage.setResizable(false);
+        primaryStage.setOnCloseRequest((e)-> AppUtils.saveState() );
         primaryStage.show();
-        application.configurateLayouts();
 
-        if (! AppUtils.isCurrentVersionLast()){
-            application.getMenuBar().getUpdate().fire();
-        }
+        application.configurateLayouts();
+        AppUtils.runUpdater(application);
+
     }
 
     /**

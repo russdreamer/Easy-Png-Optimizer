@@ -14,4 +14,8 @@ public class Constants {
 
     public static final String DEFAULT_FILE_PATH = AppUtils.createTempDir();
     public static final String COMPRESSOR_PATH = AppUtils.createTempCompressorFile();
+
+    /* user states */
+    public static final String USER_LANGUAGE = "language";
+
 }

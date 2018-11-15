@@ -1,6 +1,9 @@
 package main.java.com.toolittlespot.utils;
 
 import com.apple.eawt.Application;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import main.java.com.toolittlespot.controller.Main;
 import main.java.com.toolittlespot.elements.ApplicationArea;
 import main.java.com.toolittlespot.elements.FileElement;
@@ -8,8 +11,6 @@ import main.java.com.toolittlespot.elements.LabelElement;
 import main.java.com.toolittlespot.elements.RowElement;
 import main.java.com.toolittlespot.language.Dict;
 import main.java.com.toolittlespot.language.LangMap;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
 
 import javax.imageio.ImageIO;
 import javax.management.RuntimeErrorException;
@@ -17,17 +18,20 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+
+import static main.java.com.toolittlespot.utils.Constants.USER_LANGUAGE;
 
 public class AppUtils {
     private static String currentAppVerNum;
     private static String currentAppVerName;
     private static String lastAppVerNum;
     private static String lastAppVerLink;
+    public static HashMap<String, String> userState;
 
     public static boolean downloadFiles(List<File> files, ApplicationArea application){
         boolean isCorrect = false;
@@ -73,7 +77,8 @@ public class AppUtils {
     public static String getAppLocation() {
         String location = null;
         try {
-            location = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
+            location = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI())
+                    .getParentFile().getPath();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -296,5 +301,64 @@ public class AppUtils {
 
     public static boolean isCurrentVersionLast() {
         return AppUtils.getAppVersionNum().equals(AppUtils.getLastAppVerNum());
+    }
+
+    public static void runUpdater(ApplicationArea application) {
+        Platform.runLater(() -> {
+            if (! AppUtils.isCurrentVersionLast() && AppUtils.getLastAppVerNum() != null){
+                application.getMenuBar().getUpdate().fire();
+            }
+        });
+    }
+
+    public static String getLocalLanguage(){
+        return Locale.getDefault().getDisplayLanguage();
+    }
+
+    public static void loadStateFile() {
+        String  appPath = AppUtils.getAppLocation() +"/user_config";
+        if (Files.exists(Paths.get(appPath), LinkOption.NOFOLLOW_LINKS)){
+            AppUtils.deserializeUserState(appPath);
+            userState.put("appOpenTimes", String.valueOf( Integer.valueOf(userState.get("appOpenTimes")) + 1 ));
+        }
+        else {
+            System.out.println("doesnt exists");
+            AppUtils.putInitState();
+            AppUtils.serializeUserState(appPath);
+        }
+    }
+
+    private static void putInitState() {
+        userState = new HashMap<>();
+        userState.put(USER_LANGUAGE, AppUtils.getLocalLanguage());
+        userState.put("appOpenTimes", "1");
+    }
+
+    private static void deserializeUserState(String filePath) {
+        try {
+            FileInputStream fileIn = new FileInputStream(filePath);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            userState = (HashMap<String, String>) in.readObject();
+            in.close();
+            fileIn.close();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void serializeUserState(String filePath) {
+        try {
+            FileOutputStream fileOut = new FileOutputStream(filePath);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(userState);
+            out.close();
+            fileOut.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveState() {
+        serializeUserState(AppUtils.getAppLocation() + "/user_config");
     }
 }

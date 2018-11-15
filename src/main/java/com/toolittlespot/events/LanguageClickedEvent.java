@@ -30,14 +30,15 @@ public class LanguageClickedEvent implements EventHandler<ActionEvent> {
             alert.setContentText(LangMap.getDict(Dict.LANGUAGE_ALERT_CONTEXT));
             alert.showAndWait();
             if (alert.getResult() == change){
-                LangMap.changeLanguage(languageName);
-                application.getMainController().restart(languageName);
+                restartApp();
             }
         }
-        else {
-            LangMap.changeLanguage(languageName);
-            application.getMainController().restart(languageName);
-        }
+        else restartApp();
 
+    }
+
+    private void restartApp(){
+        LangMap.changeLanguage(languageName);
+        application.getMainController().restart(languageName);
     }
 }
