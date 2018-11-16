@@ -22,7 +22,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         AppUtils.loadStateFile();
         this.primaryStage = primaryStage;
-        createApplication(primaryStage, AppUtils.userState.get(USER_LANGUAGE));
+        createApplication(primaryStage, (String) AppUtils.userState.get(USER_LANGUAGE));
     }
 
     public void restart(String language) {

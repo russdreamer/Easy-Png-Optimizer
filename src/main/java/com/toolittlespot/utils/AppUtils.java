@@ -19,11 +19,11 @@ import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.*;
 
+import static main.java.com.toolittlespot.utils.Constants.UPDATE_DAY;
 import static main.java.com.toolittlespot.utils.Constants.USER_LANGUAGE;
 
 public class AppUtils {
@@ -31,7 +31,7 @@ public class AppUtils {
     private static String currentAppVerName;
     private static String lastAppVerNum;
     private static String lastAppVerLink;
-    public static HashMap<String, String> userState;
+    public static Map<String, Object> userState;
 
     public static boolean downloadFiles(List<File> files, ApplicationArea application){
         boolean isCorrect = false;
@@ -304,11 +304,19 @@ public class AppUtils {
     }
 
     public static void runUpdater(ApplicationArea application) {
-        Platform.runLater(() -> {
-            if (! AppUtils.isCurrentVersionLast() && AppUtils.getLastAppVerNum() != null){
-                application.getMenuBar().getUpdate().fire();
-            }
-        });
+        long now = Date.from(Instant.now()).getTime();
+        if (now >= (long)AppUtils.userState.get(UPDATE_DAY)) {
+            Platform.runLater(() -> {
+                if (! AppUtils.isCurrentVersionLast() && AppUtils.getLastAppVerNum() != null){
+                    application.getMenuBar().getUpdate().fire();
+                }
+            });
+
+            /* postponement of the checking for 5 days */
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DATE, 5);
+            AppUtils.userState.put(UPDATE_DAY, calendar.getTime().getTime());
+        }
     }
 
     public static String getLocalLanguage(){
@@ -319,7 +327,6 @@ public class AppUtils {
         String  appPath = AppUtils.getAppLocation() +"/user_config";
         if (Files.exists(Paths.get(appPath), LinkOption.NOFOLLOW_LINKS)){
             AppUtils.deserializeUserState(appPath);
-            userState.put("appOpenTimes", String.valueOf( Integer.valueOf(userState.get("appOpenTimes")) + 1 ));
         }
         else {
             System.out.println("doesnt exists");
@@ -331,14 +338,14 @@ public class AppUtils {
     private static void putInitState() {
         userState = new HashMap<>();
         userState.put(USER_LANGUAGE, AppUtils.getLocalLanguage());
-        userState.put("appOpenTimes", "1");
+        userState.put(UPDATE_DAY, Date.from(Instant.now()).getTime());
     }
 
     private static void deserializeUserState(String filePath) {
         try {
             FileInputStream fileIn = new FileInputStream(filePath);
             ObjectInputStream in = new ObjectInputStream(fileIn);
-            userState = (HashMap<String, String>) in.readObject();
+            userState = (HashMap) in.readObject();
             in.close();
             fileIn.close();
         } catch (IOException | ClassNotFoundException e) {
