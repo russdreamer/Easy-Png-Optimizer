@@ -1,6 +1,6 @@
 package main.java.com.toolittlespot.utils;
 
-import com.apple.eawt.Application;
+//import com.apple.eawt.Application;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -20,7 +20,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.*;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.*;
 
 import static main.java.com.toolittlespot.utils.Constants.UPDATE_DAY;
@@ -114,7 +113,7 @@ public class AppUtils {
         }
         try {
             InputStream inputStream = ClassLoader
-                    .getSystemResourceAsStream("main/java/com/toolittlespot/compressor/" + compressor);
+                    .getSystemResourceAsStream("resources/compressor/" + compressor);
             Files.copy(
                     inputStream,
                     Paths.get(System.getProperty("java.io.tmpdir") + "easyPng/" + compressor),
@@ -166,7 +165,7 @@ public class AppUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Application.getApplication().setDockIconImage(image);
+        //com.apple.eawt.Application.Application.getApplication().setDockIconImage(image);
     }
 
     public static void createTempFiles() {
