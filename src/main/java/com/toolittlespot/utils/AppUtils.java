@@ -1,6 +1,6 @@
 package main.java.com.toolittlespot.utils;
 
-//import com.apple.eawt.Application;
+import com.apple.eawt.Application;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -165,7 +165,7 @@ public class AppUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //com.apple.eawt.Application.Application.getApplication().setDockIconImage(image);
+        Application.getApplication().setDockIconImage(image);
     }
 
     public static void createTempFiles() {
@@ -328,7 +328,6 @@ public class AppUtils {
             AppUtils.deserializeUserState(appPath);
         }
         else {
-            System.out.println("doesnt exists");
             AppUtils.putInitState();
             AppUtils.serializeUserState(appPath);
         }
