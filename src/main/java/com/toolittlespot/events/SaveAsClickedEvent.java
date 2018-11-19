@@ -35,8 +35,8 @@ public class SaveAsClickedEvent implements EventHandler<MouseEvent> {
         File dir = directoryChooser.showDialog(application.getScene().getWindow());
         if (dir != null){
             try {
-                saveFilesToDir(application.getConvertedFiles(), dir);
-                AppUtils.showSavedAllert();
+                saveFilesToDir(application.getOptimizedFiles(), dir);
+                AppUtils.showSavedAlert();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -46,6 +46,12 @@ public class SaveAsClickedEvent implements EventHandler<MouseEvent> {
         application.getLanguageButton().getMenuButton().setDisable(false);
     }
 
+    /**
+     * saving all optimised files to the chosen directory
+     * @param fileList files to save
+     * @param dir directory to save
+     * @throws IOException if optimized file is removed
+     */
     private void saveFilesToDir(List<FileElement> fileList, File dir) throws IOException {
         for (FileElement file: fileList) {
             Path fileSource = Paths.get(DEFAULT_FILE_PATH + file.getFileNameToSave());

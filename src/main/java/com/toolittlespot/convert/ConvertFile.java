@@ -18,18 +18,34 @@ public class ConvertFile implements Callable<Boolean> {
     private FileElement fileElement;
     private ApplicationArea application;
 
+    /**
+     *
+     * @param application instance of running application element
+     * @param fileElement wrapped original file to optimize
+     */
     ConvertFile(ApplicationArea application, FileElement fileElement) {
         this.application = application;
         this.fileElement = fileElement;
     }
 
+    /**
+     * processing file before optimization
+     * @param fileElement wrapped file to process
+     * @see #optimizeFile(String, String)
+     */
     private boolean processFile(FileElement fileElement) {
         String filePath = fileElement.getFile().getAbsolutePath();
         String fileNameToSave = fileElement.getFileNameToSave();
-        return convertFile(filePath, Constants.DEFAULT_FILE_PATH +fileNameToSave);
+        return optimizeFile(filePath, Constants.DEFAULT_FILE_PATH + fileNameToSave);
     }
 
-    private boolean convertFile(String pathFrom, String pathTo) {
+    /**
+     * optimization png file with compressor
+     * @param pathFrom original file location
+     * @param pathTo optimized file location
+     * @return true if optimization completed successful
+     */
+    private boolean optimizeFile(String pathFrom, String pathTo) {
         String[] processCommand = {
                 Constants.COMPRESSOR_PATH,
                 "--strip", "--speed", "1", "--nofs", "--force", "--output", //options
@@ -37,7 +53,6 @@ public class ConvertFile implements Callable<Boolean> {
 
         Process process;
         BufferedReader reader;
-
         try {
             process = Runtime.getRuntime().exec(processCommand);
             application.getProcessList().add(process);
@@ -53,6 +68,11 @@ public class ConvertFile implements Callable<Boolean> {
         return true;
     }
 
+    /**
+     * gettin size of optimized file
+     * @param fileElement wrapped original file
+     * @return size of optimized file
+     */
     private long getNewSize(FileElement fileElement) {
         return new File(Constants.DEFAULT_FILE_PATH + fileElement.getFileNameToSave()).length();
     }
@@ -68,15 +88,24 @@ public class ConvertFile implements Callable<Boolean> {
         return false;
     }
 
+    /**
+     * move file from unoptimized list to optimized list
+     */
     private void setAsConverted() {
-        application.getUnconvertedFiles().set(fileElement.getRowNumber(), null);
-        application.getConvertedFiles().add(fileElement);
+        application.getUnoptimizedFiles().set(fileElement.getRowNumber(), null);
+        application.getOptimizedFiles().add(fileElement);
     }
 
+    /**
+     * delete optimized file from user temp directory when app closed
+     */
     private void setDeleteOnExit() {
         new File(Constants.DEFAULT_FILE_PATH + fileElement.getFileNameToSave()).deleteOnExit();
     }
 
+    /**
+     * update processing file row with new size and compress quality
+     */
     private void updateRow() {
         long oldSize = fileElement.getFile().length();
         long newSize = getNewSize(fileElement);

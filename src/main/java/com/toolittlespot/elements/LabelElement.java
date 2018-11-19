@@ -10,7 +10,7 @@ import java.util.List;
 
 public class LabelElement {
 
-    public static List<Label> createLabels(String ...names){
+    static List<Label> createLabels(String... names){
         List<Label> labels = new ArrayList<>();
         for (String name: names) {
             labels.add(new Label(name));
@@ -18,6 +18,11 @@ public class LabelElement {
         return labels;
     }
 
+    /**
+     * creating labels from file for 1 grid row
+     * @param file the file to extract data
+     * @return list of labels for the columns of the file table
+     */
     public static List<Label> createLabels(File file){
         String name = file.getName();
         String before = file.length() + LangMap.getDict(Dict.BYTES);

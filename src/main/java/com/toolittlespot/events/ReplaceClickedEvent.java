@@ -26,7 +26,7 @@ public class ReplaceClickedEvent implements EventHandler<MouseEvent> {
         application.getLanguageButton().getMenuButton().setDisable(true);
         application.getButtons().getButtons().setDisable(true);
         application.getDraggableBox().disableDraggable();
-        List<FileElement> files = application.getConvertedFiles();
+        List<FileElement> files = application.getOptimizedFiles();
 
         for (FileElement file: files) {
             String fileFrom = DEFAULT_FILE_PATH + file.getFileNameToSave();
@@ -38,7 +38,7 @@ public class ReplaceClickedEvent implements EventHandler<MouseEvent> {
             }
         }
 
-        AppUtils.showSavedAllert();
+        AppUtils.showSavedAlert();
         application.getButtons().getButtons().setDisable(false);
         application.getLanguageButton().getMenuButton().setDisable(false);
         application.getDraggableBox().enableDraggable();

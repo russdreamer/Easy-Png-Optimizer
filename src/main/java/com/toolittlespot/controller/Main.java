@@ -25,6 +25,10 @@ public class Main extends Application {
         createApplication(primaryStage, (String) AppUtils.userState.get(USER_LANGUAGE));
     }
 
+    /**
+     * restart whole application with chosen language
+     * @param language language to use as default
+     */
     public void restart(String language) {
         createApplication(primaryStage, language);
     }
@@ -52,7 +56,7 @@ public class Main extends Application {
         ButtonGroupElement buttons = new ButtonGroupElement(new StackPane());
         application.setButtons(buttons);
 
-        MenuButtonElement languageButton = new MenuButtonElement(new MenuButton(), application);
+        LanguageButtonElement languageButton = new LanguageButtonElement(new MenuButton(), application);
         application.setLanguageButton(languageButton);
 
         application.setMenuBar(new MenuBarElement(this));
@@ -83,7 +87,7 @@ public class Main extends Application {
         primaryStage.setOnCloseRequest((e)-> AppUtils.saveState() );
         primaryStage.show();
 
-        application.configurateLayouts();
+        application.configureLayouts();
         AppUtils.runUpdater(application);
 
     }

@@ -20,20 +20,18 @@ public class ApplicationArea {
     private Main mainController;
     private Scene scene;
     private StackPane filesPanel;
-    private BorderPane topPanel;
     private StackPane bottomPanel;
-    private BorderPane root;
     private GridElement grid;
     private DraggableElement draggableBox;
     private ButtonGroupElement buttons;
-    private MenuButtonElement languageButton;
+    private LanguageButtonElement languageButton;
     private MenuBarElement menuBar;
 
     /* engine side */
     private SystemOS systemOS;
     private FileMap fileMap;
-    private List<FileElement> convertedFiles;
-    private List<FileElement> unconvertedFiles;
+    private List<FileElement> optimizedFiles;
+    private List<FileElement> unoptimizedFiles;
     private List<Process> processList;
     private ExecutorService executorService;
     public static String userLanguage;
@@ -41,17 +39,12 @@ public class ApplicationArea {
     {
         fileMap = new FileMap();
         processList = Collections.synchronizedList(new ArrayList<>());
-        convertedFiles = Collections.synchronizedList(new ArrayList<>());
-        unconvertedFiles = Collections.synchronizedList(new ArrayList<>());
+        optimizedFiles = Collections.synchronizedList(new ArrayList<>());
+        unoptimizedFiles = Collections.synchronizedList(new ArrayList<>());
     }
 
     public ApplicationArea(Main main) {
         this.mainController = main;
-    }
-
-
-    public StackPane getFilesPanel() {
-        return filesPanel;
     }
 
     public void setFilesPanel(StackPane filesPanel) {
@@ -82,27 +75,22 @@ public class ApplicationArea {
         this.buttons = buttons;
     }
 
-    public BorderPane getRoot() {
-        return root;
-    }
-
-    public StackPane getBottomPanel() {
-        return bottomPanel;
-    }
-
     public void setBottomPanel(StackPane bottomPanel) {
         this.bottomPanel = bottomPanel;
     }
 
+    /**
+     * build javaFX application from set elements
+     */
     public void build(){
-        root = new BorderPane();
+        BorderPane root = new BorderPane();
         ScrollPane scrollPanel = new ScrollPane();
         scrollPanel.setContent(grid.getGrid());
         scrollPanel.setFitToWidth(true);
         filesPanel.getChildren().addAll( scrollPanel, draggableBox.getDraggableField());
         bottomPanel.getChildren().addAll(buttons.getButtons(), languageButton.getMenuButton());
 
-        topPanel = new BorderPane();
+        BorderPane topPanel = new BorderPane();
         topPanel.setTop(menuBar.getMenuBar());
         topPanel.setBottom(filesPanel);
 
@@ -119,10 +107,6 @@ public class ApplicationArea {
         return fileMap;
     }
 
-    public void setFileMap(FileMap fileMap) {
-        this.fileMap = fileMap;
-    }
-
     public List<Process> getProcessList() {
         return processList;
     }
@@ -134,23 +118,26 @@ public class ApplicationArea {
         else return executorService;
     }
 
-    public List<FileElement> getConvertedFiles() {
-        return convertedFiles;
+    public List<FileElement> getOptimizedFiles() {
+        return optimizedFiles;
     }
 
-    public List<FileElement> getUnconvertedFiles() {
-        return unconvertedFiles;
+    public List<FileElement> getUnoptimizedFiles() {
+        return unoptimizedFiles;
     }
 
-    public MenuButtonElement getLanguageButton() {
+    public LanguageButtonElement getLanguageButton() {
         return languageButton;
     }
 
-    public void setLanguageButton(MenuButtonElement languageButton) {
+    public void setLanguageButton(LanguageButtonElement languageButton) {
         this.languageButton = languageButton;
     }
 
-    public void configurateLayouts() {
+    /**
+     * set alignment and elements' sizes after application started
+     */
+    public void configureLayouts() {
         double buttonsHeight = buttons.getCompress().getHeight();
         double menuHeight = menuBar.getMenuBar().getHeight();
         this.filesPanel.setPrefHeight(Constants.SCENE_HEIGHT - buttonsHeight - menuHeight);

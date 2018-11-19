@@ -25,11 +25,17 @@ public class DraggableElement {
         return draggableField;
     }
 
+    /**
+     * make #draggableField disabled
+     */
     public void disableDraggable(){
         draggableField.setDisable(true);
         draggableField.setVisible(false);
     }
 
+    /**
+     * make #draggableField enabled
+     */
     public void enableDraggable(){
         draggableField.setDisable(false);
         draggableField.setVisible(true);

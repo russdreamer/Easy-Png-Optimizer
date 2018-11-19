@@ -13,6 +13,10 @@ public class ConvertFileManager extends Thread{
     private ApplicationArea application;
     private Collection<FileElement> files;
 
+    /**
+     * @param application instance of running application element
+     * @param files wrapped files to optimize
+     */
     public ConvertFileManager(ApplicationArea application, Collection<FileElement> files) {
         this.application = application;
         this.files = files;
@@ -21,13 +25,17 @@ public class ConvertFileManager extends Thread{
     @Override
     public void run() {
         try {
-            convert();
+            optimize();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    private void convert() throws InterruptedException {
+    /**
+     * run files optimization in different threads. Number of threads = number of available processor cores
+     * @throws InterruptedException if optimization process will stopped by user or by error
+     */
+    private void optimize() throws InterruptedException {
         ExecutorService executor = application.getExecutorService();
         List<ConvertFile> threads = new ArrayList<>();
 

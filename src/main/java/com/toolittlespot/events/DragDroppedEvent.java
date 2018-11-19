@@ -23,7 +23,7 @@ public class DragDroppedEvent implements EventHandler<DragEvent> {
         boolean success = false;
         if (db.hasFiles()) {
             List<File> files = event.getDragboard().getFiles();
-            if (AppUtils.downloadFiles(files, application)){
+            if (AppUtils.uploadFiles(files, application)){
                 application.getButtons().setFileUploadedButtonsState();
                 success = true;
             }

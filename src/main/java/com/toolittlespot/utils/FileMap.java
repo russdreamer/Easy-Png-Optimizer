@@ -11,7 +11,12 @@ public class FileMap{
         files = new HashMap<>();
     }
 
-    public boolean putIfDontExists(FileElement file){
+    /**
+     * adding file to the file Set
+     * @param file file to add
+     * @return (true) if file wasn't added before
+     */
+    boolean putIfDoesNotExist(FileElement file){
         FileElement prevVal = files.get(file.getFileNameToSave());
         if (prevVal == null){
             files.put(file.getFileNameToSave(), file);
@@ -34,6 +39,11 @@ public class FileMap{
         }
     }
 
+    /**
+     * creating new file name to avoid name collision when all optimized files will be saved into one directory
+     * @param file file to change name
+     * @return new file name
+     */
     private String createNewName(FileElement file) {
         String extension = "." + AppUtils.getExtension(file.getFileNameToSave());
         String copy = "_copy";

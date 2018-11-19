@@ -14,6 +14,10 @@ public class LangMap {
     private static Map<String, String> currentDict;
     private static boolean dictLoaded = false;
 
+    /**
+     * getting language dictionary with  user language
+     * @return language dictionary
+     */
     public static Map<String, String> getDict(){
         if (!dictLoaded) {
             loadDictionaries();
@@ -23,10 +27,19 @@ public class LangMap {
         return currentDict;
     }
 
+    /**
+     * getting a phrase from language dictionary in current language
+     * @param word key word from language dictionary to extract
+     * @return phrase from language dictionary
+     */
     public static String getDict(Dict word){
             return getDict().get(word.name());
     }
 
+    /**
+     * changing current language to chosen one
+     * @param language language to change
+     */
     public static void changeLanguage(String language){
         switch (language){
             case "English": currentDict = englishDict; break;
@@ -36,11 +49,17 @@ public class LangMap {
         AppUtils.userState.put(USER_LANGUAGE, language);
     }
 
+    /**
+     * determination user's system language
+     */
     private static void determinateUserLanguage() {
         String language = ApplicationArea.userLanguage;
         changeLanguage(language);
     }
 
+    /**
+     * loading language dictionary to use
+     */
     private static synchronized void loadDictionaries() {
         Dict[] keys = Dict.values();
 

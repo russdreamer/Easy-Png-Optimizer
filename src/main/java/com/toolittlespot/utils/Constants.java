@@ -17,6 +17,6 @@ public class Constants {
 
     /* user states */
     public static final String USER_LANGUAGE = "language";
-    public static final String UPDATE_DAY = "datToUpdate";
+    public static final String UPDATE_DAY = "dateToUpdate";
 
 }

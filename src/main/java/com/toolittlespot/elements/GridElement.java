@@ -12,7 +12,6 @@ import java.util.List;
 
 public class GridElement {
     private GridPane grid;
-    private RowElement headerRow;
     private List<RowElement> fileRows;
     private int columnNum;
     private int headerElNum;
@@ -24,9 +23,8 @@ public class GridElement {
 
     /**
      * creating a grid for uploaded files
-     * @return base grid with the only header row
      */
-    public GridPane createGrid(){
+    public void createGrid(){
         grid = new GridPane();
         grid.setOnMouseClicked(event -> {
             System.out.println(event.getEventType().getName());
@@ -44,20 +42,28 @@ public class GridElement {
 
         createHeaderRow();
         fileRows = new ArrayList<>();
-        return grid;
     }
 
-    private RowElement createHeaderRow() {
+    /**
+     * creating and filling up one row of grid which is a grid header
+     */
+    private void createHeaderRow() {
         List<Label> labels = LabelElement.createLabels(
                 LangMap.getDict(Dict.NAME_ROW)
                 , LangMap.getDict(Dict.BEFORE_ROW)
                 , LangMap.getDict(Dict.AFTER_ROW)
                 , LangMap.getDict(Dict.REDUCE_ROW));
-        headerRow = createRowFromLabels(labels, 0, Constants.HEADER_BG_STYLE);
+        createRowFromLabels(labels, 0, Constants.HEADER_BG_STYLE);
         setHeaderElNum(grid.getChildren().size());
-        return headerRow;
     }
 
+    /**
+     * creating a row
+     * @param regions list of fields (columns) for the row
+     * @param rowIndex index of row to create
+     * @param paneStyle color style of the row
+     * @return created row element
+     */
     public RowElement createRowFromLabels(List<Label> regions, int rowIndex, String paneStyle){
         RowElement row = new RowElement();
 
@@ -73,6 +79,9 @@ public class GridElement {
         return row;
     }
 
+    /**
+     * clear whole table except the header row
+     */
     public void clearGrid(){
         getFileRows().clear();
     }
@@ -85,15 +94,11 @@ public class GridElement {
         return fileRows;
     }
 
-    public void setFileRows(List<RowElement> fileRows) {
-        this.fileRows = fileRows;
-    }
-
     public int getHeaderElNum() {
         return headerElNum;
     }
 
-    public void setHeaderElNum(int headerElNum) {
+    private void setHeaderElNum(int headerElNum) {
         this.headerElNum = headerElNum;
     }
 

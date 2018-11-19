@@ -26,35 +26,60 @@ public class ButtonGroupElement {
         setDefaultButtonsState();
     }
 
-    private void setButtonState(boolean convert, boolean removeAll, boolean saveButtons, boolean stop) {
+    /**
+     * setting buttons' visibility and availability
+     * @param convert convert button
+     * @param clearAll clearAll button
+     * @param saveButtons replace and saveAs buttons
+     * @param stop stop button
+     */
+    private void setButtonState(boolean convert, boolean clearAll, boolean saveButtons, boolean stop) {
         this.compress.setVisible(convert);
-        this.clearAll.setVisible(removeAll);
+        this.clearAll.setVisible(clearAll);
         this.stop.setVisible(stop);
         this.replace.setVisible(saveButtons);
         this.saveAs.setVisible(saveButtons);
     }
 
+    /**
+     * app state at the beginning
+     */
     public void setDefaultButtonsState() {
         setButtonState(false, false, false, false);
     }
 
+    /**
+     * app state when 1 or more files uploaded
+     */
     public void setFileUploadedButtonsState() {
         setButtonState(true, true, false, false);
     }
 
+    /**
+     * app state when app in in optimizing process
+     */
     public void setConvertingButtonsState() {
         setButtonState(false, false, false, true);
     }
 
-    public void setAllConvertedButtonsState() {
+    /**
+     * app state when all files optimized successful
+     */
+    public void setAllOptimizedButtonsState() {
         setButtonState(false, true, true, false);
     }
 
+    /**
+     * app state if 1 or move files optimized but not all of them
+     */
     public void setPartlyConvertedButtonsState() {
         setButtonState(true, true, true, false);
     }
 
-    public void setAlignment() {
+    /**
+     * setting buttons' alignment
+     */
+    void setAlignment() {
         StackPane.setAlignment(compress, Pos.BOTTOM_RIGHT);
         StackPane.setAlignment(clearAll,Pos.BOTTOM_RIGHT);
         StackPane.setAlignment(stop, Pos.BOTTOM_RIGHT );
@@ -63,7 +88,7 @@ public class ButtonGroupElement {
         double shift = 0;
         StackPane.setMargin(compress, new Insets(0, shift += clearAll.getWidth(),0 , 0) );
         StackPane.setMargin(replace, new Insets(0, shift += compress.getWidth(),0 , 0) );
-        StackPane.setMargin(saveAs, new Insets(0, shift += replace.getWidth(), 0 , 0) );
+        StackPane.setMargin(saveAs, new Insets(0, shift + replace.getWidth(), 0 , 0) );
     }
 
     public StackPane getButtons() {

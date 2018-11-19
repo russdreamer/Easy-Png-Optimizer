@@ -14,14 +14,12 @@ import main.java.com.toolittlespot.utils.SystemOS;
 public class MenuBarElement {
     private MenuBar menuBar;
     private Main main;
-    private Menu help;
-    private MenuItem about;
     private MenuItem update;
 
 
     {
         menuBar = new MenuBar();
-        help = createHelpMenu();
+        Menu help = createHelpMenu();
         menuBar.getMenus().addAll(help);
 
         if (AppUtils.getSystemOS() == SystemOS.MAC){
@@ -29,6 +27,14 @@ public class MenuBarElement {
         }
     }
 
+    public MenuBarElement(Main main) {
+        this.main = main;
+    }
+
+    /**
+     * creating "update" menu item
+     * @return created menu item
+     */
     private MenuItem createUpdateItem() {
         MenuItem update = new MenuItem(LangMap.getDict(Dict.UPDATE_MENU_ITEM));
         update.setOnAction(e->{
@@ -57,21 +63,32 @@ public class MenuBarElement {
         return update;
     }
 
+    /**
+     * opening web page with files to download
+     */
     private void openDownloadPage() {
         if (AppUtils.getLastAppVerLink() == null) {
-            AppUtils.showErrorAllert(LangMap.getDict(Dict.GET_UPDATE_ERROR));
+            AppUtils.showErrorAlert(LangMap.getDict(Dict.GET_UPDATE_ERROR));
         }
         else main.getHostServices().showDocument(AppUtils.getLastAppVerLink());
     }
 
+    /**
+     * creating "help" menu button
+     * @return created menu button
+     */
     private Menu createHelpMenu() {
         Menu help = new Menu(LangMap.getDict(Dict.HELP_MENU_ITEM));
-        about = createAboutItem();
+        MenuItem about = createAboutItem();
         update = createUpdateItem();
         help.getItems().addAll(about, update);
         return help;
     }
 
+    /**
+     * creating "about" menu item
+     * @return created menu item
+     */
     private MenuItem createAboutItem() {
         MenuItem about = new MenuItem(LangMap.getDict(Dict.ABOUT_MENU_ITEM));
         about.setOnAction(e -> {
@@ -84,10 +101,10 @@ public class MenuBarElement {
         return about;
     }
 
-    public MenuBarElement(Main main) {
-        this.main = main;
-    }
-
+    /**
+     * filling "about" menu item context
+     * @return created context as a Pane
+     */
     private Pane getAboutItemContext() {
         String appVersion = AppUtils.getAppVersionNum();
         appVersion = appVersion != null ? appVersion : "--";
@@ -106,7 +123,7 @@ public class MenuBarElement {
         return new VBox(version, author, new HBox(facebook, email, git));
     }
 
-    public MenuBar getMenuBar() {
+    MenuBar getMenuBar() {
         return menuBar;
     }
 

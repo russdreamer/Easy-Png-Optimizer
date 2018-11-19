@@ -9,39 +9,20 @@ public class RowElement {
     private CellElement afterCell;
     private CellElement reduceCell;
 
-    public CellElement getNameCell() {
-        return nameCell;
-    }
-
-    public void setNameCell(CellElement nameCell) {
-        this.nameCell = nameCell;
-    }
-
-    public CellElement getBeforeCell() {
-        return beforeCell;
-    }
-
-    public void setBeforeCell(CellElement beforeCell) {
-        this.beforeCell = beforeCell;
-    }
-
-    public CellElement getAfterCell() {
+    private CellElement getAfterCell() {
         return afterCell;
     }
 
-    public void setAfterCell(CellElement afterCell) {
-        this.afterCell = afterCell;
-    }
-
-    public CellElement getReduceCell() {
+    private CellElement getReduceCell() {
         return reduceCell;
     }
 
-    public void setReduceCell(CellElement reduceCell) {
-        this.reduceCell = reduceCell;
-    }
-
-    public void setCellFromIndex(int index, CellElement cell) {
+    /**
+     * setting cell elements from known index
+     * @param index index of cell to change
+     * @param cell new cell element
+     */
+    void setCellFromIndex(int index, CellElement cell) {
         switch (index){
             case 0: nameCell = cell; break;
             case 1: beforeCell = cell; break;
@@ -51,21 +32,20 @@ public class RowElement {
         }
     }
 
-    public CellElement getCellFromIndex(int index) {
-        switch (index){
-            case 0: return nameCell;
-            case 1: return beforeCell;
-            case 2: return afterCell;
-            case 3: return reduceCell;
-            default: return null;
-        }
-    }
-
+    /**
+     * setting the reduce cell value
+     * @param afterValue new file size
+     * @param reduceValue quantity of compression as percent value
+     */
     public void changeRowConvertValues(long afterValue, long reduceValue){
         getAfterCell().setText(afterValue + LangMap.getDict(Dict.BYTES));
         getReduceCell().setText(reduceValue + "%");
     }
 
+    /**
+     * changing row color when file optimization process is done
+     * @param style row color style
+     */
     public void changeRowColor(String style){
         getReduceCell().getBackground().setStyle(style);
     }

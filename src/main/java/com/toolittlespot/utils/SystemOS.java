@@ -4,6 +4,6 @@ public enum SystemOS {
     WINDOWS,
     MAC,
     UNIX,
-    OTHER
+    OTHER,
     ;
 }

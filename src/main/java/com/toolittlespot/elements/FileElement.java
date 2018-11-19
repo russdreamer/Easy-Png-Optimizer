@@ -17,10 +17,6 @@ public class FileElement {
         return file;
     }
 
-    public void setFile(File file) {
-        this.file = file;
-    }
-
     public String getFileNameToSave() {
         return fileNameToSave;
     }
@@ -31,9 +27,5 @@ public class FileElement {
 
     public int getRowNumber() {
         return rowNumber;
-    }
-
-    public void setRowNumber(int rowNumber) {
-        this.rowNumber = rowNumber;
     }
 }
