@@ -29,8 +29,8 @@ public class LanguageButtonElement {
      * creating the language switch button
      */
     private void createButton() {
-        MenuItemElement eng = createMenuItemEl("resources/images/English.png", "English");
-        MenuItemElement rus = createMenuItemEl("resources/images/Russian.png", "Russian");
+        MenuItemElement eng = createMenuItemEl("resources/images/en.png", "en");
+        MenuItemElement rus = createMenuItemEl("resources/images/ru.png", "ru");
         List<MenuItemElement> languages = new ArrayList<>();
         languages.add(eng);
         languages.add(rus);

@@ -42,8 +42,8 @@ public class LangMap {
      */
     public static void changeLanguage(String language){
         switch (language){
-            case "English": currentDict = englishDict; break;
-            case "Russian": currentDict = russianDict; break;
+            case "en": currentDict = englishDict; break;
+            case "ru": currentDict = russianDict; break;
             default: currentDict = englishDict; break;
         }
         AppUtils.userState.put(USER_LANGUAGE, language);

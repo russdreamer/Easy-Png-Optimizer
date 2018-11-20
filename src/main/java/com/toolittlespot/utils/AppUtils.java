@@ -421,7 +421,7 @@ public class AppUtils {
      * @return user's system language
      */
     private static String getLocalLanguage(){
-        return Locale.getDefault().getDisplayLanguage();
+        return Locale.getDefault().getLanguage();
     }
 
     /**
