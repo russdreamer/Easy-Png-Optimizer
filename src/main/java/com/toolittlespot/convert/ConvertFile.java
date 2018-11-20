@@ -29,26 +29,15 @@ public class ConvertFile implements Callable<Boolean> {
     }
 
     /**
-     * processing file before optimization
-     * @param fileElement wrapped file to process
-     * @see #optimizeFile(String, String)
-     */
-    private boolean processFile(FileElement fileElement) {
-        String filePath = fileElement.getFile().getAbsolutePath();
-        return optimizeFile(filePath, fileElement.getTempFilePath());
-    }
-
-    /**
      * optimization png file with compressor
-     * @param pathFrom original file location
-     * @param pathTo optimized file location
+     * @param filePath temp file location / output path
      * @return true if optimization completed successful
      */
-    private boolean optimizeFile(String pathFrom, String pathTo) {
+    private boolean optimizeFile(String filePath) {
         String[] processCommand = {
                 Constants.COMPRESSOR_PATH,
                 "--strip", "--speed", "1", "--nofs", "--force", "--output", //options
-                pathTo, pathFrom};
+                filePath, filePath};
 
         Process process;
         BufferedReader reader;
@@ -78,7 +67,7 @@ public class ConvertFile implements Callable<Boolean> {
 
     @Override
     public Boolean call() {
-        if (processFile(fileElement)){
+        if (optimizeFile(fileElement.getTempFilePath())){
             setDeleteOnExit();
             updateRow();
             setAsConverted();
