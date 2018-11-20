@@ -109,7 +109,7 @@ public class ConvertFile implements Callable<Boolean> {
         long oldSize = fileElement.getFile().length();
         long newSize = getNewSize(fileElement);
         long reduce = (oldSize - newSize) * 100 / oldSize;
-        String rowColor = oldSize - newSize > 0 ? Constants.SUCCESS_ROW_STYLE : Constants.FAILURE_ROW_STYLE;
+        String rowColor = reduce > 0 ? Constants.SUCCESS_ROW_STYLE : Constants.FAILURE_ROW_STYLE;
         RowElement row = application.getGrid().getFileRows().get(fileElement.getRowNumber());
         Platform.runLater(()-> {
             row.changeRowConvertValues(newSize, reduce);
