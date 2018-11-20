@@ -12,8 +12,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 
-import static main.java.com.toolittlespot.utils.Constants.DEFAULT_FILE_PATH;
-
 public class ReplaceClickedEvent implements EventHandler<MouseEvent> {
     private final ApplicationArea application;
 
@@ -29,7 +27,7 @@ public class ReplaceClickedEvent implements EventHandler<MouseEvent> {
         List<FileElement> files = application.getOptimizedFiles();
 
         for (FileElement file: files) {
-            String fileFrom = DEFAULT_FILE_PATH + file.getFileNameToSave();
+            String fileFrom = file.getTempFilePath();
 
             try {
                 Files.copy(Paths.get(fileFrom), file.getFile().toPath(), StandardCopyOption.REPLACE_EXISTING);

@@ -15,8 +15,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 
-import static main.java.com.toolittlespot.utils.Constants.DEFAULT_FILE_PATH;
-
 public class SaveAsClickedEvent implements EventHandler<MouseEvent> {
     private final ApplicationArea application;
 
@@ -54,8 +52,8 @@ public class SaveAsClickedEvent implements EventHandler<MouseEvent> {
      */
     private void saveFilesToDir(List<FileElement> fileList, File dir) throws IOException {
         for (FileElement file: fileList) {
-            Path fileSource = Paths.get(DEFAULT_FILE_PATH + file.getFileNameToSave());
-            Path destFile = Paths.get(dir.getAbsolutePath() + "/" + file.getFileNameToSave());
+            Path fileSource = Paths.get(file.getTempFilePath());
+            Path destFile = Paths.get(dir.getAbsolutePath() + File.separator + file.getFileNameToSave());
             Files.copy(fileSource, destFile, StandardCopyOption.REPLACE_EXISTING);
         }
     }

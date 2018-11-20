@@ -35,8 +35,7 @@ public class ConvertFile implements Callable<Boolean> {
      */
     private boolean processFile(FileElement fileElement) {
         String filePath = fileElement.getFile().getAbsolutePath();
-        String fileNameToSave = fileElement.getFileNameToSave();
-        return optimizeFile(filePath, Constants.DEFAULT_FILE_PATH + fileNameToSave);
+        return optimizeFile(filePath, fileElement.getTempFilePath());
     }
 
     /**
@@ -74,7 +73,7 @@ public class ConvertFile implements Callable<Boolean> {
      * @return size of optimized file
      */
     private long getNewSize(FileElement fileElement) {
-        return new File(Constants.DEFAULT_FILE_PATH + fileElement.getFileNameToSave()).length();
+        return new File(fileElement.getTempFilePath()).length();
     }
 
     @Override
@@ -100,7 +99,7 @@ public class ConvertFile implements Callable<Boolean> {
      * delete optimized file from user temp directory when app closed
      */
     private void setDeleteOnExit() {
-        new File(Constants.DEFAULT_FILE_PATH + fileElement.getFileNameToSave()).deleteOnExit();
+        new File(fileElement.getTempFilePath()).deleteOnExit();
     }
 
     /**

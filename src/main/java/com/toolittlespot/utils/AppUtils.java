@@ -38,7 +38,7 @@ public class AppUtils {
      * @param application current application instance
      * @return (true) if file is correct and added
      */
-    public static boolean uploadFiles(List<File> files, ApplicationArea application){
+    public static boolean uploadFiles(List<File> files, ApplicationArea application) {
         boolean isCorrect = false;
         int fileRowsNum = application.getGrid().getFileRows().size();
         List<RowElement> fileRows = new ArrayList<>();
@@ -47,12 +47,17 @@ public class AppUtils {
             if (isImage(file) && isPng(file)){
                 FileElement fileElement = new FileElement(file, fileRowsNum);
                 if (application.getFileMap().putIfDoesNotExist(fileElement)){
-                    application.getUnoptimizedFiles().add(fileElement.getRowNumber(), fileElement);
-                    fileRowsNum++;
-                    List<Label> labels = LabelElement.createLabels(file);
-                    RowElement fileRow = application.getGrid().createRowFromLabels(labels, fileRowsNum, Constants.FILE_ROW_STYLE);
-                    fileRows.add(fileRow);
-                    isCorrect = true;
+                    try {
+                        Files.copy(fileElement.getFile().toPath(), Paths.get(fileElement.getTempFilePath()), StandardCopyOption.REPLACE_EXISTING);
+                        application.getUnoptimizedFiles().add(fileElement.getRowNumber(), fileElement);
+                        fileRowsNum++;
+                        List<Label> labels = LabelElement.createLabels(file);
+                        RowElement fileRow = application.getGrid().createRowFromLabels(labels, fileRowsNum, Constants.FILE_ROW_STYLE);
+                        fileRows.add(fileRow);
+                        isCorrect = true;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -124,7 +129,7 @@ public class AppUtils {
             File file = new File(Files.createDirectories(
                     Paths.get(System.getProperty("java.io.tmpdir") + "easyPng/converted_files")).toUri());
             file.deleteOnExit();
-            return file.getAbsolutePath() + "/";
+            return file.getAbsolutePath() + File.separator;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
