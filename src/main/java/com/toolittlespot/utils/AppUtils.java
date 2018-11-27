@@ -13,7 +13,10 @@ import main.java.com.toolittlespot.language.Dict;
 import main.java.com.toolittlespot.language.LangMap;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import javax.management.RuntimeErrorException;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
@@ -22,14 +25,13 @@ import java.nio.file.*;
 import java.time.Instant;
 import java.util.*;
 
-import static main.java.com.toolittlespot.utils.Constants.UPDATE_DAY;
-import static main.java.com.toolittlespot.utils.Constants.USER_LANGUAGE;
+import static main.java.com.toolittlespot.utils.Constants.*;
 
 public class AppUtils {
-    private static String currentAppVerNum; // version of application
-    private static String currentAppVerName; // name of application version
-    private static String lastAppVerNum; // last version of application
-    private static String lastAppVerLink; // download link of last application version
+    private static String appVersionNumber; // version of application
+    private static String appVersionName; // name of application version
+    private static String lastAppVersion; // last available version of application
+    private static String lastAppVersionLink; // download link of last application version
     public static Map<String, Object> userState; // application configurations
 
     /**
@@ -39,31 +41,52 @@ public class AppUtils {
      * @return (true) if file is correct and added
      */
     public static boolean uploadFiles(List<File> files, ApplicationArea application) {
-        boolean isCorrect = false;
-        int fileRowsNum = application.getGrid().getFileRows().size();
         List<RowElement> fileRows = new ArrayList<>();
 
-        for (File file: files) {
-            if (isImage(file) && isPng(file)){
-                FileElement fileElement = new FileElement(file, fileRowsNum);
-                if (application.getFileMap().putIfDoesNotExist(fileElement)){
-                    try {
-                        Files.copy(fileElement.getFile().toPath(), Paths.get(fileElement.getTempFilePath()), StandardCopyOption.REPLACE_EXISTING);
-                        application.getUnoptimizedFiles().add(fileElement.getRowNumber(), fileElement);
-                        fileRowsNum++;
-                        List<Label> labels = LabelElement.createLabels(file);
-                        RowElement fileRow = application.getGrid().createRowFromLabels(labels, fileRowsNum, Constants.FILE_ROW_STYLE);
-                        fileRows.add(fileRow);
-                        isCorrect = true;
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-        application.getGrid().getFileRows().addAll(fileRows);
+        files.stream()
+                .filter(AppUtils::isCorrectImage)
+                .map(file -> new FileElement(file, getNumberOfRows(application, fileRows)))
+                .filter(fileElement -> application.getFileMap().putIfDoesNotExist(fileElement))
+                .filter(AppUtils::copyFileToTempDir)
+                .forEach(fileElement -> {
+                    application.getUnoptimizedFiles().add(fileElement.getRowNumber(), fileElement);
+                    List<Label> labels = LabelElement.createLabels(fileElement.getFile());
+                    RowElement fileRow = application.getGrid().createRowFromLabels(
+                            labels, fileElement.getRowNumber() + 1, Constants.FILE_ROW_STYLE);
+                    fileRows.add(fileRow);
+                });
 
-        return isCorrect;
+        application.getGrid().getFileRows().addAll(fileRows);
+        return fileRows.size() > 0;
+    }
+
+    /**
+     * get number of filled file rows
+     * @param application current application
+     * @param fileRows temporary uploaded files
+     * @return number of filled file rows
+     */
+    private static int getNumberOfRows(ApplicationArea application, List<RowElement> fileRows) {
+        int gridRows = application.getGrid().getFileRows().size();
+        int lastUploadedFileSize = fileRows.size();
+
+        return  gridRows + lastUploadedFileSize;
+    }
+
+    /**
+     * copy image to temporary system directory
+     * @param fileElement image to upload
+     * @return true if image is uploaded
+     */
+    private static boolean copyFileToTempDir(FileElement fileElement) {
+        Path source = fileElement.getFile().toPath();
+        Path destDir = Paths.get(fileElement.getTempFilePath());
+        try {
+            Files.copy(source, destDir, StandardCopyOption.REPLACE_EXISTING);
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
     }
 
     /**
@@ -71,20 +94,20 @@ public class AppUtils {
      * @param application current application
      */
     public static void setButtonState(ApplicationArea application) {
-        int done = application.getOptimizedFiles().size();
-        int fileSize = application.getUnoptimizedFiles().size();
+        int optimizedImages = application.getOptimizedFiles().size();
+        int numOfImages = application.getUnoptimizedFiles().size();
 
-        if (done == 0){
+        if (optimizedImages == 0){
             application.getButtons().setFileUploadedButtonsState();
         }
-        else if (done < fileSize){
+        else if (optimizedImages < numOfImages){
             application.getButtons().setPartlyConvertedButtonsState();
         }
         else application.getButtons().setAllOptimizedButtonsState();
     }
 
     /**
-     *  getting file extension
+     * get file extension
      * @param name file name or file path
      * @return file extension
      */
@@ -94,7 +117,7 @@ public class AppUtils {
     }
 
     /**
-     * getting root path of application
+     * get root path of application
      * @return root path application
      */
     private static String getAppLocation() {
@@ -109,7 +132,7 @@ public class AppUtils {
     }
 
     /**
-     * showing alert when files are saved
+     * show alert when files are saved
      */
     public static void showSavedAlert(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -121,7 +144,7 @@ public class AppUtils {
     }
 
     /**
-     * creating temporary directory
+     * create temporary directory
      * @return temporary directory path
      */
     static String createTempDir() {
@@ -137,7 +160,7 @@ public class AppUtils {
     }
 
     /**
-     * creating native compressor file copy as temporary file
+     * create native compressor file copy as temporary file
      * @return temporary compressor file path
      */
     static String createTempCompressorFile(){
@@ -168,7 +191,7 @@ public class AppUtils {
     }
 
     /**
-     * getting compressor file name depending on user operating system
+     * get compressor file name depending on user operating system
      * @return compressor file name. (null) if user operating system is not defined or not supported
      */
     private static String getCompressorName() {
@@ -183,7 +206,7 @@ public class AppUtils {
     }
 
     /**
-     * getting user operating system
+     * get user operating system
      * @return user operating system
      */
     public static SystemOS getSystemOS(){
@@ -201,21 +224,19 @@ public class AppUtils {
     }
 
     /**
-     * setting application icon for the jar file
+     * set application icon for the jar file
      */
     public static void setAppIcon(){
-        InputStream is = ClassLoader.getSystemResourceAsStream("resources/images/icon.png");
-        java.awt.Image image = null;
-        try {
-            image = ImageIO.read(is);
+        try (InputStream is = ClassLoader.getSystemResourceAsStream("resources/images/icon.png")) {
+            BufferedImage image = ImageIO.read(is);
+            Application.getApplication().setDockIconImage(image);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Application.getApplication().setDockIconImage(image);
     }
 
     /**
-     * creating temporary files for app working
+     * create temporary files for app working
      */
     public static void createTempFiles() {
         createTempDir();
@@ -223,29 +244,29 @@ public class AppUtils {
     }
 
     /**
-     * getting current application name
+     * get current application name
      * @return application name
      */
     private static String getAppVersionName() {
-        if (AppUtils.currentAppVerName == null){
+        if (AppUtils.appVersionName == null){
             extractAppVersion();
         }
-       return AppUtils.currentAppVerName;
+       return AppUtils.appVersionName;
     }
 
     /**
-     * getting current application version
+     * get current application version
      * @return application version
      */
-    public static String getAppVersionNum() {
-        if (AppUtils.currentAppVerNum == null){
+    public static String getAppVersionNumber() {
+        if (AppUtils.appVersionNumber == null){
             extractAppVersion();
         }
-        return AppUtils.currentAppVerNum;
+        return AppUtils.appVersionNumber;
     }
 
     /**
-     * extracting application version and name
+     * extract application version and name
      * @see #getAppVersionName()
      * @see #getLastAppVerNum()
      */
@@ -255,15 +276,15 @@ public class AppUtils {
             BufferedReader reader = new BufferedReader(new InputStreamReader(is))
         ){
             String[] line = reader.readLine().split(" ");
-            AppUtils.currentAppVerName = line[0];
-            AppUtils.currentAppVerNum = line[1];
+            AppUtils.appVersionName = line[0];
+            AppUtils.appVersionNumber = line[1];
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * making MacOS compressor file executable
+     * make MacOS compressor file executable
      * @param file compressor file
      */
     private static void makeFileExecutable(File file) {
@@ -277,32 +298,43 @@ public class AppUtils {
     }
 
     /**
-     * checking if file is image
+     * check if file is image
      * @param file file to check
      * @return (true) if file is image
      */
-    private static boolean isImage(File file) {
+    private static boolean isCorrectImage(File file) {
+        String imageFormat;
         try {
-           ImageIO.read(file);
+            imageFormat = getImageFormat(file);
         } catch (IOException e) {
             return false;
         }
-        return true;
+
+        if ("jpeg".equals(imageFormat) || "png".equals(imageFormat)) {
+            return true;
+        }
+        return false;
     }
 
     /**
-     * checking if file extension is png
-     * @param file file to check
-     * @return (true) if file extension is png
+     * get image format name
+     * @param file image file
+     * @return image format name or "null" if no image format found
+     * @throws IOException if file is not image
      */
-    private static boolean isPng(File file) {
-        String extension = getExtension(file.getName());
-        return "png".equals(extension);
+    private static String getImageFormat(File file) throws IOException {
+        ImageInputStream iis = ImageIO.createImageInputStream(file);
+        Iterator<ImageReader> imageReaders = ImageIO.getImageReaders(iis);
 
+        while (imageReaders.hasNext()) {
+            ImageReader reader = imageReaders.next();
+            return reader.getFormatName().toLowerCase();
+        }
+        return null;
     }
 
     /**
-     * showing error alert
+     * show error alert
      * @param message error message
      */
     public static void showErrorAlert(String message) {
@@ -313,29 +345,29 @@ public class AppUtils {
     }
 
     /**
-     * getting last available application version
+     * get last available application version
      * @return last application version
      */
     private static String getLastAppVerNum() {
-        if (AppUtils.lastAppVerNum == null){
+        if (AppUtils.lastAppVersion == null){
             extractLastVersion();
         }
-        return AppUtils.lastAppVerNum;
+        return AppUtils.lastAppVersion;
     }
 
     /**
-     * getting last available application version link to download
+     * get last available application version link to download
      * @return link to download last app version
      */
     public static String getLastAppVerLink() {
-        if (AppUtils.lastAppVerLink == null){
+        if (AppUtils.lastAppVersionLink == null){
             extractLastVersion();
         }
-        return AppUtils.lastAppVerLink;
+        return AppUtils.lastAppVersionLink;
     }
 
     /**
-     * extracting last available application version and link from remote git repository
+     * extract last available application version and link from remote git repository
      */
     private static void extractLastVersion () {
         String lastVersionPath = "https://raw.githubusercontent.com/russdreamer/Easy-Png-Optimizer/master/src/new_version_links";
@@ -348,8 +380,8 @@ public class AppUtils {
             while ((result = reader.readLine()) != null) {
                 String[] line = result.split(" ");
                 if (AppUtils.getAppVersionName().equals(line[0])){
-                    AppUtils.lastAppVerNum = line[1];
-                    AppUtils.lastAppVerLink = line[2];
+                    AppUtils.lastAppVersion = line[1];
+                    AppUtils.lastAppVersionLink = line[2];
                     reader.close();
                     return;
                 }
@@ -361,11 +393,11 @@ public class AppUtils {
     }
 
     /**
-     * getting last app version changes
+     * get last app version changes
      * @return text of changes
      */
     public static String getPatchContent() {
-        if (AppUtils.lastAppVerNum == null){
+        if (AppUtils.lastAppVersion == null){
             return  LangMap.getDict(Dict.GET_PATCH_NOTE_ERROR);
         }
 
@@ -379,7 +411,7 @@ public class AppUtils {
             StringBuilder builder = new StringBuilder();
             String result;
             builder.append("New version «Easy Png» ").
-                    append(AppUtils.lastAppVerNum).
+                    append(AppUtils.lastAppVersion).
                     append("\n");
             while ((result = reader.readLine()) != null) {
                 builder.append(result).
@@ -394,11 +426,14 @@ public class AppUtils {
     }
 
     /**
-     * comparison current and last available app version
+     * compare current and last available app version
      * @return (true) if current version is equal to the last one
      */
-    public static boolean isCurrentVersionLast() {
-        return AppUtils.getAppVersionNum().equals(AppUtils.getLastAppVerNum());
+    public static boolean isNewVersionAppAvailable() {
+        if (AppUtils.getLastAppVerNum() == null) {
+            return false;
+        }
+        return AppUtils.getAppVersionNumber().equals(AppUtils.getLastAppVerNum());
     }
 
     /**
@@ -409,7 +444,7 @@ public class AppUtils {
         long now = Date.from(Instant.now()).getTime();
         if (now >= (long)AppUtils.userState.get(UPDATE_DAY)) {
             Platform.runLater(() -> {
-                if (! AppUtils.isCurrentVersionLast() && AppUtils.getLastAppVerNum() != null){
+                if (AppUtils.isNewVersionAppAvailable()){
                     application.getMenuBar().getUpdate().fire();
                 }
             });
@@ -422,7 +457,7 @@ public class AppUtils {
     }
 
     /**
-     * getting user's system language
+     * get user's system language
      * @return user's system language
      */
     private static String getLocalLanguage(){
@@ -430,10 +465,10 @@ public class AppUtils {
     }
 
     /**
-     * extracting application configurations
+     * extract application configurations
      */
     public static void loadStateFile() {
-        String  appPath = AppUtils.getAppLocation() +"/user_config";
+        String  appPath = AppUtils.getAppLocation() + File.separator + STATE_FILE_NAME;
         if (Files.exists(Paths.get(appPath), LinkOption.NOFOLLOW_LINKS)){
             AppUtils.deserializeUserState(appPath);
         }
@@ -453,7 +488,7 @@ public class AppUtils {
     }
 
     /**
-     * deserialization application configuration
+     * deserialize application configuration
      * @param filePath application configuration file path
      */
     private static void deserializeUserState(String filePath) {
@@ -469,7 +504,7 @@ public class AppUtils {
     }
 
     /**
-     * serialization application configuration
+     * serialize application configuration
      * @param filePath application configuration file path
      */
     private static void serializeUserState(String filePath) {
@@ -485,9 +520,9 @@ public class AppUtils {
     }
 
     /**
-     * saving application states to application configuration file
+     * save application states to application configuration file
      */
     public static void saveState() {
-        serializeUserState(AppUtils.getAppLocation() + "/user_config");
+        serializeUserState(AppUtils.getAppLocation() + File.separator + STATE_FILE_NAME);
     }
 }

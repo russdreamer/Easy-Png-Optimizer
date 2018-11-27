@@ -16,6 +16,7 @@ public class Constants {
     public static final String COMPRESSOR_PATH = AppUtils.createTempCompressorFile();
 
     /* user states */
+    public static final String STATE_FILE_NAME = "user_config";
     public static final String USER_LANGUAGE = "language";
     public static final String UPDATE_DAY = "dateToUpdate";
 

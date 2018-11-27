@@ -45,7 +45,7 @@ public class MenuBarElement {
             ButtonType close = new ButtonType(LangMap.getDict(Dict.CLOSE_BUTTON));
 
             String content;
-            if (AppUtils.isCurrentVersionLast()){
+            if (AppUtils.isNewVersionAppAvailable()){
                 content = LangMap.getDict(Dict.YOU_USE_LAST_VERSION);
             }
             else {
@@ -106,7 +106,7 @@ public class MenuBarElement {
      * @return created context as a Pane
      */
     private Pane getAboutItemContext() {
-        String appVersion = AppUtils.getAppVersionNum();
+        String appVersion = AppUtils.getAppVersionNumber();
         appVersion = appVersion != null ? appVersion : "--";
         Text version = new Text(LangMap.getDict(Dict.APPLICATION_VERSION) + ": " + appVersion);
         Text author = new Text(LangMap.getDict(Dict.AUTHOR) + ": Igor Kovtun");
