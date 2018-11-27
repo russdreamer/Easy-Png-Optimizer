@@ -46,11 +46,11 @@ public class MenuBarElement {
 
             String content;
             if (AppUtils.isNewVersionAppAvailable()){
-                content = LangMap.getDict(Dict.YOU_USE_LAST_VERSION);
-            }
-            else {
                 content = AppUtils.getPatchContent();
                 alert.getButtonTypes().add(updateButton);
+            }
+            else {
+                content = LangMap.getDict(Dict.YOU_USE_LAST_VERSION);
             }
 
             alert.getButtonTypes().add(close);

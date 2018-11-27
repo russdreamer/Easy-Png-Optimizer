@@ -433,7 +433,7 @@ public class AppUtils {
         if (AppUtils.getLastAppVerNum() == null) {
             return false;
         }
-        return AppUtils.getAppVersionNumber().equals(AppUtils.getLastAppVerNum());
+        return ! AppUtils.getAppVersionNumber().equals(AppUtils.getLastAppVerNum());
     }
 
     /**
@@ -446,14 +446,21 @@ public class AppUtils {
             Platform.runLater(() -> {
                 if (AppUtils.isNewVersionAppAvailable()){
                     application.getMenuBar().getUpdate().fire();
+                    postponeNextCheck(5);
                 }
+                else postponeNextCheck(1);
             });
-
-            /* postponement of the checking for 5 days */
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, 5);
-            AppUtils.userState.put(UPDATE_DAY, calendar.getTime().getTime());
         }
+    }
+
+    /**
+     * postpone next check
+     * @param days days to postpone from now
+     */
+    private static void postponeNextCheck(int days) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, days);
+        AppUtils.userState.put(UPDATE_DAY, calendar.getTime().getTime());
     }
 
     /**
