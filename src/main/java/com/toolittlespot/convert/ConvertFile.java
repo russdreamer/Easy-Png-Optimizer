@@ -36,7 +36,6 @@ public class ConvertFile implements Callable<Boolean> {
     public Boolean call() {
         if (fileElement.optimize(application)){
             if (! Thread.interrupted()) {
-                setDeleteOnExit();
                 updateRow();
                 setAsConverted();
                 return true;
@@ -51,13 +50,6 @@ public class ConvertFile implements Callable<Boolean> {
     private void setAsConverted() {
         application.getUnoptimizedFiles().set(fileElement.getRowNumber(), null);
         application.getOptimizedFiles().add(fileElement);
-    }
-
-    /**
-     * delete optimized file from user temp directory when app closed
-     */
-    private void setDeleteOnExit() {
-        new File(fileElement.getTempFilePath()).deleteOnExit();
     }
 
     /**

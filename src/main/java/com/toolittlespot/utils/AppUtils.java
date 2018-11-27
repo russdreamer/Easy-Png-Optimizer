@@ -47,6 +47,7 @@ public class AppUtils {
                 .filter(fileElement -> application.getFileMap().putIfDoesNotExist(fileElement))
                 .filter(AppUtils::copyFileToTempDir)
                 .forEach(fileElement -> {
+
                     application.getUnoptimizedFiles().add(fileElement.getRowNumber(), fileElement);
                     List<Label> labels = LabelElement.createLabels(fileElement.getFile());
                     RowElement fileRow = application.getGrid().createRowFromLabels(
@@ -102,6 +103,7 @@ public class AppUtils {
         Path destDir = Paths.get(fileElement.getTempFilePath());
         try {
             Files.copy(source, destDir, StandardCopyOption.REPLACE_EXISTING);
+            new File(fileElement.getTempFilePath()).deleteOnExit();
             return true;
         } catch (IOException e) {
             return false;
