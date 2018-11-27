@@ -1,21 +1,16 @@
 package main.java.com.toolittlespot.convert;
 
 import main.java.com.toolittlespot.elements.ApplicationArea;
-import main.java.com.toolittlespot.elements.FileElement;
+import main.java.com.toolittlespot.elements.ImageElement;
 import main.java.com.toolittlespot.elements.RowElement;
 import javafx.application.Platform;
 import main.java.com.toolittlespot.utils.Constants;
-import org.apache.log4j.Logger;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.concurrent.Callable;
 
 public class ConvertFile implements Callable<Boolean> {
-    private final static Logger LOGGER = Logger.getLogger(ConvertFile.class);
-    private FileElement fileElement;
+    private ImageElement fileElement;
     private ApplicationArea application;
 
     /**
@@ -23,37 +18,9 @@ public class ConvertFile implements Callable<Boolean> {
      * @param application instance of running application element
      * @param fileElement wrapped original file to optimize
      */
-    ConvertFile(ApplicationArea application, FileElement fileElement) {
+    ConvertFile(ApplicationArea application, ImageElement fileElement) {
         this.application = application;
         this.fileElement = fileElement;
-    }
-
-    /**
-     * optimization png file with compressor
-     * @param filePath temp file location / output path
-     * @return true if optimization completed successful
-     */
-    private boolean optimizeFile(String filePath) {
-        String[] processCommand = {
-                Constants.COMPRESSOR_PATH,
-                "--strip", "--speed", "1", "--nofs", "--force", "--output", //options
-                filePath, filePath};
-
-        Process process;
-        BufferedReader reader;
-        try {
-            process = Runtime.getRuntime().exec(processCommand);
-            application.getProcessList().add(process);
-            process.waitFor();
-            reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            LOGGER.trace(reader.readLine());
-            reader.close();
-        }
-        catch (IOException | InterruptedException e) {
-            LOGGER.warn("converting file is interrupted.");
-            return false;
-        }
-        return true;
     }
 
     /**
@@ -61,17 +28,19 @@ public class ConvertFile implements Callable<Boolean> {
      * @param fileElement wrapped original file
      * @return size of optimized file
      */
-    private long getNewSize(FileElement fileElement) {
+    private long getNewSize(ImageElement fileElement) {
         return new File(fileElement.getTempFilePath()).length();
     }
 
     @Override
     public Boolean call() {
-        if (optimizeFile(fileElement.getTempFilePath())){
-            setDeleteOnExit();
-            updateRow();
-            setAsConverted();
-            return true;
+        if (fileElement.optimize(application)){
+            if (! Thread.interrupted()) {
+                setDeleteOnExit();
+                updateRow();
+                setAsConverted();
+                return true;
+            }
         }
         return false;
     }

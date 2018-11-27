@@ -34,6 +34,7 @@ public class ButtonGroupElement {
      * @param stop stop button
      */
     private void setButtonState(boolean convert, boolean clearAll, boolean saveButtons, boolean stop) {
+        this.buttons.setDisable(false);
         this.compress.setVisible(convert);
         this.clearAll.setVisible(clearAll);
         this.stop.setVisible(stop);

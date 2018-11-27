@@ -5,10 +5,7 @@ import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import main.java.com.toolittlespot.controller.Main;
-import main.java.com.toolittlespot.elements.ApplicationArea;
-import main.java.com.toolittlespot.elements.FileElement;
-import main.java.com.toolittlespot.elements.LabelElement;
-import main.java.com.toolittlespot.elements.RowElement;
+import main.java.com.toolittlespot.elements.*;
 import main.java.com.toolittlespot.language.Dict;
 import main.java.com.toolittlespot.language.LangMap;
 
@@ -44,8 +41,9 @@ public class AppUtils {
         List<RowElement> fileRows = new ArrayList<>();
 
         files.stream()
+                .filter(File::isFile)
                 .filter(AppUtils::isCorrectImage)
-                .map(file -> new FileElement(file, getNumberOfRows(application, fileRows)))
+                .map(file -> AppUtils.createImageElement(file, getNumberOfRows(application, fileRows)))
                 .filter(fileElement -> application.getFileMap().putIfDoesNotExist(fileElement))
                 .filter(AppUtils::copyFileToTempDir)
                 .forEach(fileElement -> {
@@ -58,6 +56,27 @@ public class AppUtils {
 
         application.getGrid().getFileRows().addAll(fileRows);
         return fileRows.size() > 0;
+    }
+
+    /**
+     * fabric method. create image element depending on image format
+     * @param file image file
+     * @param rowNumber number of row where to place file
+     * @return image element based on format
+     */
+    private static ImageElement createImageElement(File file, int rowNumber){
+        String fileFormat = null;
+        try {
+            fileFormat = AppUtils.getImageFormat(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        switch (fileFormat){
+            case "jpeg": return new JpegElement(file, rowNumber);
+            case "png": return new PngElement(file, rowNumber);
+            default: return new PngElement(file, rowNumber);
+        }
     }
 
     /**
@@ -78,7 +97,7 @@ public class AppUtils {
      * @param fileElement image to upload
      * @return true if image is uploaded
      */
-    private static boolean copyFileToTempDir(FileElement fileElement) {
+    private static boolean copyFileToTempDir(ImageElement fileElement) {
         Path source = fileElement.getFile().toPath();
         Path destDir = Paths.get(fileElement.getTempFilePath());
         try {

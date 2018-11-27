@@ -1,8 +1,8 @@
 package main.java.com.toolittlespot.events;
 
+import main.java.com.toolittlespot.elements.ImageElement;
 import main.java.com.toolittlespot.utils.AppUtils;
 import main.java.com.toolittlespot.elements.ApplicationArea;
-import main.java.com.toolittlespot.elements.FileElement;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
@@ -50,8 +50,8 @@ public class SaveAsClickedEvent implements EventHandler<MouseEvent> {
      * @param dir directory to save
      * @throws IOException if optimized file is removed
      */
-    private void saveFilesToDir(List<FileElement> fileList, File dir) throws IOException {
-        for (FileElement file: fileList) {
+    private void saveFilesToDir(List<ImageElement> fileList, File dir) throws IOException {
+        for (ImageElement file: fileList) {
             Path fileSource = Paths.get(file.getTempFilePath());
             Path destFile = Paths.get(dir.getAbsolutePath() + File.separator + file.getFileNameToSave());
             Files.copy(fileSource, destFile, StandardCopyOption.REPLACE_EXISTING);

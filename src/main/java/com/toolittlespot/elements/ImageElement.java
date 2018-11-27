@@ -4,17 +4,17 @@ import main.java.com.toolittlespot.utils.Constants;
 
 import java.io.File;
 
-public class FileElement {
+public abstract class ImageElement {
     private File file;
+    private int rowNumber;
     private String fileNameToSave;
     private String tempFilePath;
-    private int rowNumber;
 
-    public FileElement(File file, int rowNumber) {
+    public ImageElement(File file, int rowNumber) {
         this.file = file;
         this.rowNumber = rowNumber;
         this.fileNameToSave = file.getName();
-        this.tempFilePath = Constants.DEFAULT_FILE_PATH + File.separator + rowNumber + ".png";
+        this.tempFilePath = Constants.DEFAULT_FILE_PATH + rowNumber;
     }
 
     public File getFile() {
@@ -36,4 +36,11 @@ public class FileElement {
     public String getTempFilePath() {
         return tempFilePath;
     }
+
+    /**
+     * optimization png file with compressor
+     * @param application current application
+     * @return true if optimization completed successful
+     */
+    public abstract boolean optimize(ApplicationArea application);
 }

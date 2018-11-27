@@ -1,11 +1,11 @@
 package main.java.com.toolittlespot.utils;
 
-import main.java.com.toolittlespot.elements.FileElement;
+import main.java.com.toolittlespot.elements.ImageElement;
 
 import java.util.*;
 
 public class FileMap{
-    private HashMap<String, FileElement> files;
+    private HashMap<String, ImageElement> files;
 
     {
         files = new HashMap<>();
@@ -16,8 +16,8 @@ public class FileMap{
      * @param file file to add
      * @return (true) if file wasn't added before
      */
-    boolean putIfDoesNotExist(FileElement file){
-        FileElement prevVal = files.get(file.getFileNameToSave());
+    boolean putIfDoesNotExist(ImageElement file){
+        ImageElement prevVal = files.get(file.getFileNameToSave());
         if (prevVal == null){
             files.put(file.getFileNameToSave(), file);
             return true;
@@ -44,7 +44,7 @@ public class FileMap{
      * @param file file to change name
      * @return new file name
      */
-    private String createNewName(FileElement file) {
+    private String createNewName(ImageElement file) {
         String extension = "." + AppUtils.getExtension(file.getFileNameToSave());
         String copy = "_copy";
         int i = 1;

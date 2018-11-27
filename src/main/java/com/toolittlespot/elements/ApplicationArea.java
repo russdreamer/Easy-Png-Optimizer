@@ -30,8 +30,8 @@ public class ApplicationArea {
     /* engine side */
     private SystemOS systemOS;
     private FileMap fileMap;
-    private List<FileElement> optimizedFiles;
-    private List<FileElement> unoptimizedFiles;
+    private List<ImageElement> optimizedFiles;
+    private List<ImageElement> unoptimizedFiles;
     private List<Process> processList;
     private ExecutorService executorService;
     public static String userLanguage;
@@ -118,11 +118,11 @@ public class ApplicationArea {
         else return executorService;
     }
 
-    public List<FileElement> getOptimizedFiles() {
+    public List<ImageElement> getOptimizedFiles() {
         return optimizedFiles;
     }
 
-    public List<FileElement> getUnoptimizedFiles() {
+    public List<ImageElement> getUnoptimizedFiles() {
         return unoptimizedFiles;
     }
 

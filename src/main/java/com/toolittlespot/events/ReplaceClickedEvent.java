@@ -1,8 +1,8 @@
 package main.java.com.toolittlespot.events;
 
+import main.java.com.toolittlespot.elements.ImageElement;
 import main.java.com.toolittlespot.utils.AppUtils;
 import main.java.com.toolittlespot.elements.ApplicationArea;
-import main.java.com.toolittlespot.elements.FileElement;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
@@ -24,9 +24,9 @@ public class ReplaceClickedEvent implements EventHandler<MouseEvent> {
         application.getLanguageButton().getMenuButton().setDisable(true);
         application.getButtons().getButtons().setDisable(true);
         application.getDraggableBox().disableDraggable();
-        List<FileElement> files = application.getOptimizedFiles();
+        List<ImageElement> files = application.getOptimizedFiles();
 
-        for (FileElement file: files) {
+        for (ImageElement file: files) {
             String fileFrom = file.getTempFilePath();
 
             try {
