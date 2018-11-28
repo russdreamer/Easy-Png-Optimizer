@@ -1,5 +1,6 @@
 package main.java.com.toolittlespot.elements;
 
+import javafx.scene.control.MenuButton;
 import main.java.com.toolittlespot.utils.FileMap;
 import main.java.com.toolittlespot.controller.Main;
 import javafx.scene.Scene;
@@ -43,8 +44,17 @@ public class ApplicationArea {
         unoptimizedFiles = Collections.synchronizedList(new ArrayList<>());
     }
 
-    public ApplicationArea(Main main) {
+    public ApplicationArea(Main main, String language) {
         this.mainController = main;
+        filesPanel = new StackPane();
+        bottomPanel = new StackPane();
+        userLanguage = language;
+        draggableBox = new DraggableElement();
+        buttons = new ButtonGroupElement(new StackPane());
+        languageButton = new LanguageButtonElement(new MenuButton(), this);
+        menuBar = new MenuBarElement(mainController);
+        grid = new GridElement(4);
+        grid.createGrid();
     }
 
     public void setFilesPanel(StackPane filesPanel) {

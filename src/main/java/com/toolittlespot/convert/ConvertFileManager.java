@@ -7,6 +7,7 @@ import main.java.com.toolittlespot.elements.ApplicationArea;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -40,12 +41,12 @@ public class ConvertFileManager extends Thread{
         ExecutorService executor = application.getExecutorService();
         List<ConvertFile> threads = new ArrayList<>();
 
-        for (ImageElement file: files) {
-            if (file != null){
-                ConvertFile thread = new ConvertFile(application, file);
-                threads.add(thread);
-            }
-        }
+        files.stream()
+                .filter(Objects::nonNull)
+                .forEach(file -> {
+                    ConvertFile thread = new ConvertFile(application, file);
+                    threads.add(thread);
+                });
 
         executor.invokeAll(threads);
 

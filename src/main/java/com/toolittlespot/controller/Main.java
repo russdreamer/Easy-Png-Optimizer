@@ -1,9 +1,6 @@
 package main.java.com.toolittlespot.controller;
 
 import javafx.application.Application;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuButton;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import main.java.com.toolittlespot.elements.*;
@@ -17,6 +14,7 @@ import static main.java.com.toolittlespot.utils.Constants.USER_LANGUAGE;
 public class Main extends Application {
 
     private Stage primaryStage;
+    private ApplicationArea application;
 
     @Override
     public void start(Stage primaryStage) {
@@ -34,51 +32,12 @@ public class Main extends Application {
     }
 
     private void createApplication(Stage primaryStage, String language) {
-        ApplicationArea application = new ApplicationArea(this);
+        application = new ApplicationArea(this, language);
 
         application.setSystemOS(AppUtils.getSystemOS());
-        if (application.getSystemOS() == SystemOS.MAC) {
-            AppUtils.setAppIcon();
-        }
+        setAppIconIfMacOS();
         AppUtils.createTempFiles();
-
-        ApplicationArea.userLanguage = language;
-        application.setFilesPanel(new StackPane());
-        application.setBottomPanel(new StackPane());
-
-        GridElement gridElement = new GridElement(4);
-        gridElement.createGrid();
-        application.setGrid(gridElement);
-
-        DraggableElement dragElement = new DraggableElement();
-        application.setDraggableBox(dragElement);
-
-        ButtonGroupElement buttons = new ButtonGroupElement(new StackPane());
-        application.setButtons(buttons);
-
-        LanguageButtonElement languageButton = new LanguageButtonElement(new MenuButton(), application);
-        application.setLanguageButton(languageButton);
-
-        application.setMenuBar(new MenuBarElement(this));
-
-        /* get all necessary nodes for events setting */
-        VBox dragTarget = dragElement.getDraggableField();
-        Button convertButton = buttons.getCompress();
-        Button removeAllButton = buttons.getClearAll();
-        Button replaceButton = buttons.getReplace();
-        Button saveAsButton = buttons.getSaveAs();
-        Button stopButton = buttons.getStop();
-
-        /* set all application events */
-        dragTarget.setOnDragOver(new DragOverEvent(application));
-        dragTarget.setOnDragDropped(new DragDroppedEvent(application));
-        dragTarget.setOnDragExited(new DragExitedEvent(application));
-        convertButton.setOnMouseClicked(new ConvertClickedEvent(application));
-        removeAllButton.setOnMouseClicked(new RemoveAllClickedEvent(application));
-        replaceButton.setOnMouseClicked(new ReplaceClickedEvent(application));
-        saveAsButton.setOnMouseClicked(new SaveAsClickedEvent(application));
-        stopButton.setOnMouseClicked(new StopClickedEvent(application));
-
+        setEvents();
         application.build();
 
         primaryStage.setTitle("EASY.png");
@@ -90,7 +49,29 @@ public class Main extends Application {
 
         application.configureLayouts();
         AppUtils.runUpdater(application);
+    }
 
+    /**
+     * set general gui events
+     */
+    private void setEvents() {
+        VBox dragTarget = application.getDraggableBox().getDraggableField();
+        dragTarget.setOnDragOver(new DragOverEvent(application));
+        dragTarget.setOnDragDropped(new DragDroppedEvent(application));
+        dragTarget.setOnDragExited(new DragExitedEvent(application));
+
+        ButtonGroupElement buttons = application.getButtons();
+        buttons.getCompress().setOnMouseClicked(new ConvertClickedEvent(application));
+        buttons.getClearAll().setOnMouseClicked(new RemoveAllClickedEvent(application));
+        buttons.getReplace().setOnMouseClicked(new ReplaceClickedEvent(application));
+        buttons.getSaveAs().setOnMouseClicked(new SaveAsClickedEvent(application));
+        buttons.getStop().setOnMouseClicked(new StopClickedEvent(application));
+    }
+
+    private void setAppIconIfMacOS() {
+        if (application.getSystemOS() == SystemOS.MAC) {
+            AppUtils.setAppIcon();
+        }
     }
 
     /**

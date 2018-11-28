@@ -24,8 +24,6 @@ public class StopClickedEvent implements EventHandler<MouseEvent> {
 
         /* stop all processes inside of threads */
         List<Process> list = application.getProcessList();
-        for (Process process: list) {
-            process.destroyForcibly();
-        }
+        list.forEach(Process::destroyForcibly);
     }
 }
