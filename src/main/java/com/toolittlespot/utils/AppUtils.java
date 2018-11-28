@@ -428,7 +428,7 @@ public class AppUtils {
             URL url = new URL(patchNotePath);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
             StringBuilder builder = new StringBuilder();
             String result;
             builder.append("New version «Easy Png» ").
