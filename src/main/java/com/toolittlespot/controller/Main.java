@@ -84,6 +84,7 @@ public class Main extends Application {
         primaryStage.setTitle("EASY.png");
         primaryStage.setScene(application.getScene());
         primaryStage.setResizable(false);
+        primaryStage.sizeToScene();
         primaryStage.setOnCloseRequest((e)-> AppUtils.saveState() );
         primaryStage.show();
 
