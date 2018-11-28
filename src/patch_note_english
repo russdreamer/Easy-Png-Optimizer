@@ -1,8 +1,7 @@
-► The first stable version;
-► Maximal compress quality;
-► Batch image processing;
-► Fast speed due to the involvement of all processor cores;
-► Support two languages: Russian and English;
-► Wide range of functionality;
-► Application for Windows and MacOS;
-► Versions for users with installed JRE, and without one;
+► Added JPEG support! You can optimize PNG and JPEG easily!;
+► Fixed display of unicode in the update pop-up on Windows;
+► Fixed bug with application size on startup on Windows;
+► Fixed directory dropping bug;
+► Fixed dropping image with wrong extension;
+► Improved check updates system;
+► Fixed non-deletable temporary files;
