@@ -1,7 +1,2 @@
-► Added JPEG support! You can optimize PNG and JPEG easily!;
-► Fixed display of unicode in the update pop-up on Windows;
-► Fixed bug with application size on startup on Windows;
-► Fixed directory dropping bug;
-► Fixed dropping image with wrong extension;
-► Improved check updates system;
-► Fixed non-deletable temporary files;
+► Significantly improved optimization quality
+  of blurry and translucent PNG images
