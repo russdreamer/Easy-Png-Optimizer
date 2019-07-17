@@ -34,3 +34,5 @@ Download execute application from [releases](https://github.com/russdreamer/Easy
 
 Write your suggestions for the application improving or bug fixing [here](https://github.com/russdreamer/Easy-Png-Optimizer/issues).
 
+<img src="https://pp.userapi.com/c856032/v856032473/95e96/gF3k1-Hg_Bk.jpg">
+
