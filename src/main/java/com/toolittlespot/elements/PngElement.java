@@ -16,7 +16,7 @@ public class PngElement extends ImageElement {
     public boolean optimize(ApplicationArea application) {
         String[] processCommand = {
                 Constants.COMPRESSOR_PATH,
-                "--strip", "--speed", "1", "--force", "--output", //options
+                "--strip", "--speed", "1", "--force", "--skip-if-larger", "--output", //options
                 getTempFilePath(), getTempFilePath()};
 
         Process process;
