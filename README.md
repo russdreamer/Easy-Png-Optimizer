@@ -1,5 +1,7 @@
 # Png and Jpeg Optimizer
-![icon](https://github.com/russdreamer/Easy-Png-Optimizer/blob/master/src/resources/images/icon.png?raw=true)
+<p align="center">
+  <img src="https://github.com/russdreamer/Easy-Png-Optimizer/blob/master/src/resources/images/icon.png?raw=true">
+ </p>
 
 This is a crossplatform GUI implementation of [pngquant library](https://pngquant.org/) for PNG images and [Java ImageWriter](https://docs.oracle.com/javase/8/docs/api/javax/imageio/ImageWriter.html) for JPEG images.
 GUI based on JavaFX. 
@@ -31,4 +33,6 @@ GUI based on JavaFX.
 Download execute application from [releases](https://github.com/russdreamer/Easy-Png-Optimizer/releases).
 
 Write your suggestions for the application improving or bug fixing [here](https://github.com/russdreamer/Easy-Png-Optimizer/issues).
+
+<img src="https://pp.userapi.com/c856032/v856032473/95e96/gF3k1-Hg_Bk.jpg">
 
